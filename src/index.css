@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+@theme {
+    --font-roboto: 'Roboto', sans-serif;
+
+    --color-black-100: #0D0D0D;
+    --color-black-200: #141414;
+
+    --color-gray-100: #222222;
+    --color-gray-200: #292929;
+    --color-gray-300: #565656;
+
+    --color-green-100: #0DB063;
+
+    --color-pink-100: #E80352;
+    --color-pink-200: #FE5487;
+    --color-pink-300: #FD7988;
+    --color-pink-400: #FE8F8E;
+}
+
+.text-gradient {
+    background: linear-gradient(115deg, #FE8F8E, #FD7988, #FE5487);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
