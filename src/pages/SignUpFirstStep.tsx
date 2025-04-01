@@ -7,16 +7,25 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useSignUpStore } from "../store/signUpStore.ts";
 import { SignUpFirstStepData } from "../types/types.ts";
 import { signUpFirstStepValidator } from "../validators/signUpValidator.ts";
+import GoBackButton from "../components/button/GoBackButton.tsx";
 
 const SignUpFirstStep = () => {
   const navigate = useNavigate();
-  const { setSignUpData } = useSignUpStore();
+  const { setSignUpData, signUpData } = useSignUpStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(signUpFirstStepValidator),
+    defaultValues: {
+      username: signUpData.username,
+      firstName: signUpData.firstName,
+      lastName: signUpData.lastName,
+      email: signUpData.email,
+      password: signUpData.password,
+      confirmPassword: signUpData.password,
+    },
   });
 
   const onNextStep = (data: SignUpFirstStepData) => {
@@ -31,10 +40,13 @@ const SignUpFirstStep = () => {
           "w-[700px] gap-12 px-4 py-8 flex items-center flex-col h-auto border-2 border-pink-100 rounded-xl"
         }
       >
-        <h1 className={"text-4xl text-white"}>
-          Sign Up on{" "}
-          <span className={"text-gradient font-bold"}>FlameLink</span>
-        </h1>
+        <div className={"w-full h-auto flex relative justify-center"}>
+          <GoBackButton />
+          <h1 className={"text-4xl text-white"}>
+            Sign Up on{" "}
+            <span className={"text-gradient font-bold"}>FlameLink</span>
+          </h1>
+        </div>
         <form
           onSubmit={handleSubmit(onNextStep)}
           className={"flex flex-col w-full h-auto gap-4"}

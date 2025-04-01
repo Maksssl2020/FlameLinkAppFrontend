@@ -1,18 +1,33 @@
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 type DatePickerInputProps = {
   title: string;
+  initSelectedDate?: Date | null;
   onChange: (date: Date) => void;
   error?: string;
 };
 
-const DatePickerInput = ({ title, onChange, error }: DatePickerInputProps) => {
+const DatePickerInput = ({
+  title,
+  onChange,
+  error,
+  initSelectedDate = null,
+}: DatePickerInputProps) => {
   const today = new Date();
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(
+    initSelectedDate,
+  );
+
+  useEffect(() => {
+    if (initSelectedDate) {
+      setSelectedDate(new Date(initSelectedDate));
+    }
+  }, [initSelectedDate]);
+
   return (
     <div className={"w-auto h-auto flex flex-col text-white gap-3"}>
       <label className={"ml-2 text-xl"}>{title}</label>
@@ -22,6 +37,8 @@ const DatePickerInput = ({ title, onChange, error }: DatePickerInputProps) => {
           if (date) {
             setSelectedDate(date);
             onChange(date);
+
+            console.log(date);
           }
         }}
         maxDate={today}

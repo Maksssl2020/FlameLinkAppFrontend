@@ -6,6 +6,9 @@ type AnimatedButtonProps = {
   onClick?: () => void;
   className?: string;
   type?: "button" | "submit" | "reset";
+  hoverBackgroundColor?: string;
+  hoverBorderColor?: string;
+  hoverTextColor?: string;
 };
 
 const AnimatedButton = ({
@@ -13,12 +16,19 @@ const AnimatedButton = ({
   className,
   children,
   type = "button",
+  hoverBackgroundColor = "#E80352",
+  hoverBorderColor = "#E80352",
+  hoverTextColor = "#0D0D0D",
 }: AnimatedButtonProps) => {
   return (
     <motion.button
       type={type}
       onClick={onClick}
-      whileHover={{ backgroundColor: "#E80352", color: "#FFFFFF" }}
+      whileHover={{
+        borderColor: hoverBorderColor,
+        backgroundColor: hoverBackgroundColor,
+        color: hoverTextColor,
+      }}
       className={`flex justify-center items-center ${className}`}
     >
       {children}

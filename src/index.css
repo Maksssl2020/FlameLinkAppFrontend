@@ -25,3 +25,18 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
+.scrollbar {
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: #E80352;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        cursor: pointer;
+    }
+}

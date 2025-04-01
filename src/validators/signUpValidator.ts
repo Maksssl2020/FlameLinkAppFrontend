@@ -19,6 +19,8 @@ export const signUpFirstStepValidator = yup.object().shape({
 });
 
 export const signUpSecondStepValidator = yup.object().shape({
+  country: yup.string().required("Country is required."),
+  city: yup.string().required("City is required."),
   dateOfBirth: yup
     .date()
     .typeError("Enter a valid date of birth.")

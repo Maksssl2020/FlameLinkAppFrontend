@@ -8,6 +8,8 @@ import { useSignUpStore } from "../store/signUpStore.ts";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { signUpSecondStepValidator } from "../validators/signUpValidator.ts";
 import { SignUpSecondStepData } from "../types/types.ts";
+import FormInput from "../components/input/FormInput.tsx";
+import GoBackButton from "../components/button/GoBackButton.tsx";
 
 const genderOptions: SignUpSecondStepData["gender"][] = [
   "Male",
@@ -22,18 +24,23 @@ const preferenceOptions: SignUpSecondStepData["preference"][] = [
 
 const SignUpSecondStep = () => {
   const navigate = useNavigate();
-  const { setSignUpData } = useSignUpStore();
+  const { setSignUpData, signUpData } = useSignUpStore();
+
   const {
     setValue,
     watch,
     handleSubmit,
+    register,
     formState: { errors },
   } = useForm<SignUpSecondStepData>({
+    // @ts-ignore
     resolver: yupResolver(signUpSecondStepValidator),
     defaultValues: {
-      dateOfBirth: new Date(),
-      gender: "Male",
-      preference: "Males",
+      country: signUpData.country,
+      city: signUpData.city,
+      dateOfBirth: signUpData.dateOfBirth ?? null,
+      gender: signUpData.gender,
+      preference: signUpData.preference,
     },
   });
 
@@ -61,12 +68,28 @@ const SignUpSecondStep = () => {
           "w-[700px] gap-12 px-4 py-8 flex items-center flex-col h-auto border-2 border-pink-100 rounded-xl"
         }
       >
-        <h1 className={"text-4xl text-white"}>
-          Sign Up on{" "}
-          <span className={"text-gradient font-bold"}>FlameLink</span>
-        </h1>
+        <div className={"w-full h-auto flex relative justify-center"}>
+          <GoBackButton />
+          <h1 className={"text-4xl text-white"}>
+            Sign Up on{" "}
+            <span className={"text-gradient font-bold"}>FlameLink</span>
+          </h1>
+        </div>
         <div className={"flex flex-col w-full h-auto gap-4"}>
+          <FormInput
+            title={"Country"}
+            type={"text"}
+            register={register("country")}
+            error={errors?.country?.message}
+          />
+          <FormInput
+            title={"City"}
+            type={"text"}
+            register={register("city")}
+            error={errors?.city?.message}
+          />
           <DatePickerInput
+            initSelectedDate={signUpData.dateOfBirth}
             title={"Date of birth"}
             onChange={onDateOfBirthChange}
             error={errors?.dateOfBirth?.message}

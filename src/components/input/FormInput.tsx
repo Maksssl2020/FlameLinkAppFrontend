@@ -66,7 +66,7 @@ const FormInput = ({
           </button>
         )}
       </div>
-      <p className={"text-lg text-red-500"}>{error && error}</p>
+      <p className={"text-lg text-red-500 h-[35px]"}>{error && error}</p>
     </div>
   );
 };

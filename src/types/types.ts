@@ -6,7 +6,15 @@ export interface SignUpFirstStepData {
 }
 
 export interface SignUpSecondStepData {
-  dateOfBirth: Date;
+  country: string;
+  city: string;
+  dateOfBirth: Date | null;
   gender: "Male" | "Female" | "Other";
   preference: "Males" | "Females" | "Both";
+}
+
+export interface ErrorResponse {
+  statusCode: number;
+  message: string;
+  details?: string;
 }
