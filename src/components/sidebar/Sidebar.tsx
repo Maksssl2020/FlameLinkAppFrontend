@@ -1,28 +1,24 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import SidebarContainer from "./SidebarContainer.tsx";
+import { SectionType } from "../../types/types.ts";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { ReactNode } from "react";
 
-type SectionType = {
-  name: string;
-  url: string;
+type SidebarProps = {
+  sections: SectionType[];
+  linkPrefix: string;
+  children?: ReactNode;
 };
 
-const sections: SectionType[] = [
-  { name: "Discover People", url: "discover-people" },
-  { name: "Forum", url: "forum" },
-  { name: "Your Matches", url: "matches" },
-  { name: "Liked People", url: "liked-people" },
-];
-
-const DashboardSidebar = () => {
+const Sidebar = ({ sections, linkPrefix, children }: SidebarProps) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   return (
-    <div className={"min-w-[300px] h-full border-r-2 border-gray-200 p-4"}>
+    <SidebarContainer>
       <ul className={"flex flex-col gap-4"}>
         {sections.map((section, index) => (
           <motion.li
-            onClick={() => navigate(`/dashboard/${section.url}`)}
+            onClick={() => navigate(`/${linkPrefix}/${section.url}`)}
             animate={
               location.pathname.includes(section.url)
                 ? { borderColor: "#E80352" }
@@ -37,8 +33,9 @@ const DashboardSidebar = () => {
           </motion.li>
         ))}
       </ul>
-    </div>
+      <div className={"w-full h-auto mt-auto"}>{children}</div>
+    </SidebarContainer>
   );
 };
 
-export default DashboardSidebar;
+export default Sidebar;

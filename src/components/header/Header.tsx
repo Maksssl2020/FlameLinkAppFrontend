@@ -4,9 +4,11 @@ import { RxExit } from "react-icons/rx";
 
 import useAuthentication from "../../hooks/useAuthentication.ts";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/authStore.ts";
 
 const Header = () => {
   const authentication = useAuthentication();
+  const logout = useAuthStore().logout;
   const navigate = useNavigate();
 
   return (
@@ -17,9 +19,9 @@ const Header = () => {
     >
       <h1 className={"font-bold text-4xl text-gradient"}>FlameLink</h1>
       <div className={"ml-auto w-auto h-full flex gap-3 items-center"}>
-        {authentication.authentication?.isAuthenticated && (
+        {authentication?.isAuthenticated && (
           <AnimatedButton
-            onClick={() => navigate("/account")}
+            onClick={() => navigate("/account/overall")}
             className={
               "size-14 cursor-pointer rounded-full border-2 text-white"
             }
@@ -27,10 +29,10 @@ const Header = () => {
             <HiOutlineUser className={"size-8 stroke-[1.5]"} />
           </AnimatedButton>
         )}
-        {authentication.authentication?.isAuthenticated && (
+        {authentication?.isAuthenticated && (
           <AnimatedButton
             onClick={() => {
-              authentication.logout();
+              logout();
               navigate("/");
             }}
             className={

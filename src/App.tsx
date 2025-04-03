@@ -5,14 +5,17 @@ import SignUpFirstStep from "./pages/SignUpFirstStep.tsx";
 import SignIn from "./pages/SignIn.tsx";
 import SignUpSecondStep from "./pages/SignUpSecondStep.tsx";
 import SignUpThirdStep from "./pages/SignUpThirdStep.tsx";
-import AdminInterestsManagement from "./pages/AdminInterestsManagement.tsx";
+import AdminInterestsManagement from "./pages/admin/AdminInterestsManagement.tsx";
 import ProtectedAdminRoute from "./router/ProtectedAdminRoute.tsx";
-import Account from "./pages/Account.tsx";
-import DiscoverPeople from "./pages/DiscoverPeople.tsx";
+import AccountOverall from "./pages/account/AccountOverall.tsx";
+import DashboardDiscoverPeople from "./pages/dashboard/DashboardDiscoverPeople.tsx";
 import DashboardLayout from "./layout/DashboardLayout.tsx";
-import Matches from "./pages/Matches.tsx";
-import Forum from "./pages/Forum.tsx";
-import UserLikes from "./pages/UserLikes.tsx";
+import DashboardMatches from "./pages/dashboard/DashboardMatches.tsx";
+import DashboardNews from "./pages/dashboard/DashboardForum.tsx";
+import DashboardUserLikes from "./pages/dashboard/DashboardUserLikes.tsx";
+import AccountLayout from "./layout/AccountLayout.tsx";
+import AccountProfile from "./pages/account/AccountProfile.tsx";
+import AdminNewsForm from "./pages/admin/AdminNewsForm.tsx";
 
 function App() {
   return (
@@ -28,20 +31,30 @@ function App() {
           <Route element={<DashboardLayout />}>
             <Route
               path={"/dashboard/discover-people"}
-              element={<DiscoverPeople />}
+              element={<DashboardDiscoverPeople />}
             />
-            <Route path={"/dashboard/forum"} element={<Forum />} />
-            <Route path={"/dashboard/matches"} element={<Matches />} />
-            <Route path={"/dashboard/liked-people"} element={<UserLikes />} />
+            <Route path={"/dashboard/news"} element={<DashboardNews />} />
+            <Route path={"/dashboard/matches"} element={<DashboardMatches />} />
+            <Route
+              path={"/dashboard/liked-people"}
+              element={<DashboardUserLikes />}
+            />
           </Route>
 
-          <Route path={"/account"} element={<Account />} />
+          <Route element={<AccountLayout />}>
+            <Route path={"/account/overall"} element={<AccountOverall />} />
+            <Route path={"/account/profile"} element={<AccountProfile />} />
 
-          <Route element={<ProtectedAdminRoute />}>
-            <Route
-              path={"/admin/interest-form"}
-              element={<AdminInterestsManagement />}
-            />
+            <Route element={<ProtectedAdminRoute />}>
+              <Route
+                path={"/account/admin/manage-interests"}
+                element={<AdminInterestsManagement />}
+              />
+              <Route
+                path={"/account/admin/news-form"}
+                element={<AdminNewsForm />}
+              />
+            </Route>
           </Route>
         </Route>
       </Routes>

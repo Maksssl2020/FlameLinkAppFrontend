@@ -18,3 +18,8 @@ export interface ErrorResponse {
   message: string;
   details?: string;
 }
+
+export interface SectionType {
+  name: string;
+  url: string;
+}

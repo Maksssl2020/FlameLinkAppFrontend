@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const ProtectedAdminRoute = () => {
-  const authentication = useAuthentication().authentication;
+  const authentication = useAuthentication();
   const navigate = useNavigate();
 
   useEffect(() => {
