@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { IoCloudUploadOutline } from "react-icons/io5";
 
 type FormFileInputProps = {
-  title: string;
+  title?: string;
   error?: string;
   inputWidth?: string;
   inputHeight?: string;
@@ -46,7 +46,7 @@ const FormFileInput = ({
 
   return (
     <div className={"flex flex-col gap-4"}>
-      <label className={"text-white ml-2 text-xl"}>{title}</label>
+      {title && <label className={"text-white ml-2 text-xl"}>{title}</label>}
       <div className={"flex flex-col"}>
         <motion.label
           onDragOver={(event) => {

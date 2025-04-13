@@ -18,7 +18,7 @@ export interface RegisterDataState {
 }
 
 export interface AuthenticationState {
-  id: number;
+  userId: number;
   username: string;
   accessToken: string;
   roles: string[];
@@ -26,7 +26,7 @@ export interface AuthenticationState {
 }
 
 export interface AuthenticationResponse {
-  id: number;
+  userId: number;
   username: string;
   accessToken: string;
   roles: string[];

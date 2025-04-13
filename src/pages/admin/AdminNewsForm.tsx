@@ -47,6 +47,7 @@ const AdminNewsForm = () => {
               type={"text"}
               register={register("title")}
               error={errors?.title?.message}
+              formType={"default"}
             />
             <FormTextArea
               title={"Article description"}

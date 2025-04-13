@@ -22,7 +22,7 @@ const AccountLayout = () => {
   const allSections = useMemo(() => {
     return authentication?.isAuthenticated &&
       authentication?.roles.includes("Admin")
-      ? [...sections, ...adminSections]
+      ? [...sections.filter((s) => s.url !== "profile"), ...adminSections]
       : sections;
   }, [authentication]);
 
