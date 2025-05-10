@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { HiOutlineDocumentAdd, HiOutlineX } from "react-icons/hi";
 
 type FormFileInputProps = {
   title?: string;
@@ -24,17 +25,35 @@ const FormFileInput = ({
   maxFiles = 3,
 }: FormFileInputProps) => {
   const [isDraggedOver, setIsDraggedOver] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleFiles = (newFiles: FileList | null) => {
-    if (!newFiles) return;
+    if (!newFiles || newFiles.length === 0) return;
 
-    let filesArray = Array.from(newFiles);
+    const filesArray = Array.from(newFiles);
 
     if (multiple) {
-      filesArray = filesArray.slice(0, maxFiles);
-      onChangeMultiple?.(filesArray);
+      const combinedFiles = [...selectedFiles, ...filesArray].slice(
+        0,
+        maxFiles,
+      );
+      setSelectedFiles(combinedFiles);
+      onChangeMultiple?.(combinedFiles);
     } else {
+      setSelectedFiles([filesArray[0]]);
       onChange?.(filesArray[0]);
+    }
+  };
+
+  const removeFile = (index: number) => {
+    const updatedFiles = [...selectedFiles];
+    updatedFiles.splice(index, 1);
+    setSelectedFiles(updatedFiles);
+
+    if (multiple) {
+      onChangeMultiple?.(updatedFiles.length > 0 ? updatedFiles : undefined);
+    } else {
+      onChange?.(updatedFiles.length > 0 ? updatedFiles[0] : undefined);
     }
   };
 
@@ -45,9 +64,11 @@ const FormFileInput = ({
   };
 
   return (
-    <div className={"flex flex-col gap-4"}>
-      {title && <label className={"text-white ml-2 text-xl"}>{title}</label>}
-      <div className={"flex flex-col"}>
+    <div className="flex flex-col gap-2 mb-4">
+      {title && (
+        <label className="text-white text-lg font-medium">{title}</label>
+      )}
+      <div className="flex flex-col gap-3">
         <motion.label
           onDragOver={(event) => {
             event.preventDefault();
@@ -55,36 +76,61 @@ const FormFileInput = ({
           }}
           onDragLeave={() => setIsDraggedOver(false)}
           onDrop={handleDrop}
-          whileHover={{
-            color: "#292929",
-            borderColor: "#E80352",
-            backgroundColor: "#E80352",
-          }}
+          whileHover={{ borderColor: "#FE5487" }}
           animate={{
-            color: isDraggedOver ? "#292929" : "#E6E6E6",
             borderColor: isDraggedOver
-              ? "#E80352"
+              ? "#FE5487"
               : error
                 ? "#FB2C36"
                 : "#292929",
-            backgroundColor: isDraggedOver ? "#E80352" : "#292929",
+            backgroundColor: isDraggedOver
+              ? "rgba(254, 84, 135, 0.1)"
+              : "transparent",
           }}
-          htmlFor={"fileInput"}
-          className={`border-white text-white flex cursor-pointer items-center justify-center rounded-xl border-2 ${inputWidth} ${inputHeight}`}
+          htmlFor="fileInput"
+          className={`flex flex-col items-center justify-center rounded-xl border-2 border-dashed cursor-pointer ${inputWidth} ${inputHeight} bg-black-100`}
         >
-          <IoCloudUploadOutline className={"size-12 "} />
+          <IoCloudUploadOutline className="size-10 text-pink-200 mb-2" />
+          <p className="text-white text-sm text-center px-2">
+            {multiple
+              ? "Drop files here or click to browse"
+              : "Drop file here or click to browse"}
+          </p>
         </motion.label>
+
         <input
-          id={"fileInput"}
-          type={"file"}
-          className={"h-0 w-0 border-none outline-none"}
+          id="fileInput"
+          type="file"
+          className="hidden"
           onChange={(event) => handleFiles(event.target.files)}
           multiple={multiple}
         />
+
+        {selectedFiles.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-2">
+            {selectedFiles.map((file, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-2 bg-black-100 border border-gray-200 rounded-lg px-3 py-1"
+              >
+                <HiOutlineDocumentAdd className="size-4 text-pink-200" />
+                <span className="text-white text-sm truncate max-w-[150px]">
+                  {file.name}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => removeFile(index)}
+                  className="text-gray-300 hover:text-pink-200"
+                >
+                  <HiOutlineX className="size-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-      <p className={"h-[35px] pt-3 pl-3 text-lg text-red-500"}>
-        {error && error}
-      </p>
+
+      {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>
   );
 };

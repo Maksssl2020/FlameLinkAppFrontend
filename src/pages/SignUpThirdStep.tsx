@@ -26,32 +26,20 @@ const SignUpThirdStep = () => {
   };
 
   return (
-    <Page>
-      <div
-        className={
-          "w-[850px] gap-12 px-4 py-8 flex items-center flex-col h-auto border-2 border-pink-100 rounded-xl"
-        }
-      >
-        <div
-          className={"w-full h-auto flex justify-center items-center relative"}
-        >
+    <Page className="bg-black-100 min-h-screen flex items-center justify-center px-4">
+      <div className="w-full max-w-[850px] gap-10 px-6 py-10 flex items-center flex-col h-auto border-2 border-pink-100 rounded-xl bg-black-200 shadow-lg shadow-pink-100/10">
+        <div className="w-full h-auto flex justify-center items-center relative">
           <GoBackButton />
-          <h1 className={"text-4xl text-white"}>
+          <h1 className="text-4xl md:text-5xl text-white font-bold">
             Sign Up on{" "}
-            <span className={"text-gradient font-bold"}>FlameLink</span>
+            <span className="text-gradient font-bold">FlameLink</span>
           </h1>
         </div>
-        <div
-          className={
-            "flex flex-col w-full h-auto gap-4 border-t-2 border-pink-100 pt-4"
-          }
-        >
-          <h2 className={"text-3xl text-white self-center "}>
+        <div className="flex flex-col w-full h-auto gap-6 border-t-2 border-pink-100 pt-6">
+          <h2 className="text-3xl text-white self-center font-semibold">
             Select your interests
           </h2>
-          <div
-            className={"w-full h-auto flex flex-wrap justify-around gap-3 py-8"}
-          >
+          <div className="w-full h-auto flex flex-wrap justify-around gap-4 py-6">
             {interests.map((interest, index) => (
               <InterestCard
                 key={index}
@@ -65,10 +53,10 @@ const SignUpThirdStep = () => {
 
         <AnimatedButton
           onClick={() => signUp()}
-          className={
-            "w-full h-[65px] border-2 rounded-xl border-white cursor-pointer text-white text-2xl font-bold"
-          }
-          type={"submit"}
+          className="w-full h-[65px] bg-gradient-to-r from-pink-400 via-pink-300 to-pink-200 rounded-xl cursor-pointer text-black-100 text-2xl font-bold transition-all"
+          hoverBackgroundColor="#E80352"
+          hoverTextColor="#FFFFFF"
+          type="submit"
         >
           Sign Up
         </AnimatedButton>

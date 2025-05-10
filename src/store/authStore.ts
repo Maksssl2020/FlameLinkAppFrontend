@@ -6,10 +6,18 @@ import { create } from "zustand/react";
 import { persist, PersistStorage } from "zustand/middleware";
 
 interface AuthStoreState {
-  authentication: AuthenticationState | null;
+  authentication: AuthenticationState;
   login: (data: AuthenticationResponse) => void;
   logout: () => void;
 }
+
+const initialAuthenticationState: AuthenticationState = {
+  username: null,
+  isAuthenticated: false,
+  userId: null,
+  accessToken: null,
+  roles: [],
+};
 
 const sessionStorageAdapter: PersistStorage<AuthStoreState> = {
   getItem: (key) => {
@@ -27,10 +35,10 @@ const sessionStorageAdapter: PersistStorage<AuthStoreState> = {
 export const useAuthStore = create<AuthStoreState>()(
   persist(
     (setState) => ({
-      authentication: null,
+      authentication: initialAuthenticationState,
       login: (data) =>
         setState({ authentication: { ...data, isAuthenticated: true } }),
-      logout: () => setState({ authentication: null }),
+      logout: () => setState({ authentication: initialAuthenticationState }),
     }),
     {
       name: "auth-storage",

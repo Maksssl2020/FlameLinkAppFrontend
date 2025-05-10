@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "framer-motion";
 import {
   HiOutlineEye,
@@ -5,7 +7,7 @@ import {
   HiOutlinePencil,
 } from "react-icons/hi2";
 import { useState } from "react";
-import { UseFormRegisterReturn } from "react-hook-form";
+import type { UseFormRegisterReturn } from "react-hook-form";
 
 type FormInputProps = {
   title: string;
@@ -13,7 +15,7 @@ type FormInputProps = {
   formType: "account" | "default" | "immutable";
   defaultValue?: string;
   error?: string;
-  register?: UseFormRegisterReturn<string>;
+  register?: UseFormRegisterReturn;
   onChange?: (value: string) => void;
   readOnly?: boolean;
   canShowPassword?: boolean;
@@ -28,81 +30,81 @@ const FormInput = ({
   error,
   readOnly = false,
   formType = "default",
-  defaultValue = undefined,
+  defaultValue,
   canShowPassword = true,
-  onEditClick = undefined,
+  onEditClick,
 }: FormInputProps) => {
-  const [isReadOnly, setIsReadOnly] = useState(readOnly);
+  const [isEditing, setIsEditing] = useState(!readOnly);
   const [showPassword, setShowPassword] = useState(false);
   const [inputType, setInputType] = useState(type);
 
-  const handleButtonClick = () => {
-    if (type === "password" && showPassword) {
-      setShowPassword(false);
-      setInputType("password");
-    } else if (type === "password" && !showPassword) {
-      setShowPassword(true);
-      setInputType("text");
+  const handleTogglePassword = () => {
+    setShowPassword(!showPassword);
+    setInputType(showPassword ? "password" : "text");
+  };
+
+  const handleEditClick = () => {
+    if (type === "password") {
+      onEditClick?.();
+    } else {
+      setIsEditing(!isEditing);
     }
   };
 
+  const getBorderColor = () => {
+    if (error) return "#fb2c36";
+    if (formType === "immutable") return "#292929";
+    if (!isEditing) return "#292929";
+    return "#FE5487";
+  };
+
   return (
-    <div className={"flex flex-col gap-3 text-white w-auto h-auto"}>
-      <label className={"ml-2 text-xl"}>{title}</label>
-      <div className={"w-full flex items-center h-[50px] relative"}>
+    <div className="flex flex-col gap-2 mb-4">
+      <label className="text-white text-lg font-medium">{title}</label>
+      <div className="relative">
         <motion.input
           defaultValue={defaultValue}
-          onChange={(event) => onChange?.(event.target.value)}
-          whileFocus={{
-            borderColor: "#E80352",
-          }}
-          style={{
-            borderColor: "#292929",
-          }}
-          animate={error ? { borderColor: "#fb2c36" } : {}}
+          onChange={(e) => onChange?.(e.target.value)}
+          whileFocus={{ borderColor: "#E80352" }}
+          initial={{ borderColor: getBorderColor() }}
+          animate={{ borderColor: getBorderColor() }}
           type={inputType}
-          readOnly={isReadOnly}
-          disabled={isReadOnly}
-          className={
-            "w-full bg-gray-200 px-2 h-full border-2 rounded-xl outline-none"
-          }
+          readOnly={!isEditing || readOnly}
+          disabled={!isEditing || readOnly}
+          className={`w-full h-[55px] bg-black-100 border-2 rounded-xl px-4 text-white ${
+            !isEditing || readOnly ? "opacity-80" : ""
+          }`}
           {...register}
         />
+
         {type === "password" && canShowPassword && (
           <button
-            type={"button"}
-            onClick={handleButtonClick}
-            className={
-              "absolute right-0 size-10 flex items-center justify-center text-pink-200"
-            }
+            type="button"
+            onClick={handleTogglePassword}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-pink-200 transition-colors"
           >
             {showPassword ? (
-              <HiOutlineEyeSlash className={"size-7"} />
+              <HiOutlineEyeSlash className="size-5" />
             ) : (
-              <HiOutlineEye className={"size-7"} />
+              <HiOutlineEye className="size-5" />
             )}
           </button>
         )}
-        {formType === "account" && (
+
+        {formType !== "immutable" && (
           <motion.button
-            animate={isReadOnly ? { color: "#565656" } : { color: "#FE5487" }}
-            type={"button"}
-            onClick={() => {
-              if (type !== "password") {
-                setIsReadOnly(!isReadOnly);
-              } else {
-                onEditClick?.();
-              }
-            }}
-            className={
-              "absolute right-0 cursor-pointer size-10 flex items-center justify-center text-pink-200"
-            }
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            type="button"
+            onClick={handleEditClick}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-pink-200 transition-colors"
           >
-            <HiOutlinePencil className={"size-7"} />
+            <HiOutlinePencil className="size-5" />
           </motion.button>
         )}
       </div>
-      <p className={"text-lg text-red-500 h-[35px]"}>{error && error}</p>
+
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };

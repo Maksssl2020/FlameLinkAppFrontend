@@ -7,14 +7,27 @@ import { useState } from "react";
 import Spinner from "../spinner/Spinner.tsx";
 import useInterestSelection from "../../hooks/useInterestSelection.ts";
 import InterestCard from "../card/InterestCard.tsx";
+import { UserParams } from "../../types/userTypes.ts";
+import useAuthentication from "../../hooks/useAuthentication.ts";
 
 type FilterPeoplePanelProps = {
   onClose?: () => void;
+  initialFilters?: UserParams;
+  onSubmit?: (params: UserParams) => void;
 };
 
-const FilterPeoplePanel = ({ onClose }: FilterPeoplePanelProps) => {
-  const [minAgeValue, setMinAgeValue] = useState<number>(20);
-  const [maxAgeValue, setMaxAgeValue] = useState<number>(minAgeValue + 1);
+const FilterPeoplePanel = ({
+  onClose,
+  onSubmit,
+  initialFilters,
+}: FilterPeoplePanelProps) => {
+  const { username } = useAuthentication();
+  const [minAgeValue, setMinAgeValue] = useState<number>(
+    initialFilters?.minAge ?? 20,
+  );
+  const [maxAgeValue, setMaxAgeValue] = useState<number>(
+    initialFilters?.maxAge ?? minAgeValue + 1,
+  );
   const {
     fetchingInterests,
     selectedInterests,
@@ -37,25 +50,35 @@ const FilterPeoplePanel = ({ onClose }: FilterPeoplePanelProps) => {
     }
   };
 
+  const handleSubmitFilters = () => {
+    const params: UserParams = {
+      userUsername: username ?? "",
+      minAge: minAgeValue,
+      maxAge: maxAgeValue,
+      pageSize: 20,
+      pageNumber: 0,
+    };
+    onSubmit?.(params);
+    onClose?.();
+  };
+
   if (fetchingInterests || !availableInterests) {
     return <Spinner />;
   }
 
   return (
-    <div
-      className={
-        "w-[600px] h-[550px] flex flex-col gap-8 p-4 rounded-xl relative border-2 border-pink-100 bg-black-200"
-      }
-    >
+    <div className="w-[600px] max-w-full h-[550px] flex flex-col gap-8 p-6 rounded-xl relative border-2 border-pink-100 bg-black-200 shadow-lg shadow-pink-100/10">
       <AnimatedButton
         onClick={() => onClose?.()}
-        className={
-          "size-10 absolute right-2 top-2 rounded-full border-2 cursor-pointer text-white"
-        }
+        className="size-10 absolute right-3 top-3 rounded-full border-2 border-pink-100 cursor-pointer text-white "
+        hoverBackgroundColor="#E80352"
+        hoverTextColor="#FFFFFF"
       >
-        <IoCloseOutline className={"size-7"} />
+        <IoCloseOutline className="size-7" />
       </AnimatedButton>
-      <h1 className={"text-3xl text-white self-center"}>Set Filter Options</h1>
+      <h1 className="text-3xl text-white self-center font-bold">
+        Set Filter Options
+      </h1>
       <div className={"w-full h-auto  flex flex-col gap-4"}>
         <div className={"flex justify-between text-white items-center"}>
           <label className={"text-xl"}>Preferred age</label>
@@ -149,6 +172,14 @@ const FilterPeoplePanel = ({ onClose }: FilterPeoplePanelProps) => {
           ))}
         </div>
       </div>
+      <AnimatedButton
+        onClick={handleSubmitFilters}
+        className="w-full h-[55px] bg-gradient-to-r from-pink-400 via-pink-300 to-pink-200 text-black-100 font-bold rounded-xl text-xl"
+        hoverBackgroundColor="#E80352"
+        hoverTextColor="#FFFFFF"
+      >
+        Apply Filters
+      </AnimatedButton>
     </div>
   );
 };

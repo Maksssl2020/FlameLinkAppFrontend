@@ -1,6 +1,6 @@
 export interface Image {
   id: number;
-  image: string;
+  imageData: string;
 }
 
 export interface ImageToPreviewProps {

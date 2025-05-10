@@ -17,6 +17,10 @@
     --color-pink-200: #FE5487;
     --color-pink-300: #FD7988;
     --color-pink-400: #FE8F8E;
+
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
 }
 
 .text-gradient {
@@ -24,6 +28,58 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+}
+
+body {
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}
+
+div {
+    cursor: default;
+    user-select: none;
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #fe5487, #fe9776);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Custom scrollbar */
+.scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+    background: #141414;
+    border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background: #292929;
+    border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #fe5487;
+}
+
+/* For Firefox */
+.scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #292929 #141414;
+}
+
+/* For mobile devices */
+@media (max-width: 768px) {
+    .scrollbar::-webkit-scrollbar {
+        width: 3px;
+        height: 3px;
+    }
 }
 
 .scrollbar {

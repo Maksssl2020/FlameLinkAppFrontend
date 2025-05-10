@@ -62,46 +62,42 @@ const SignUpSecondStep = () => {
   };
 
   return (
-    <Page>
-      <div
-        className={
-          "w-[700px] gap-12 px-4 py-8 flex items-center flex-col h-auto border-2 border-pink-100 rounded-xl"
-        }
-      >
-        <div className={"w-full h-auto flex relative justify-center"}>
+    <Page className="bg-black-100 min-h-screen flex items-center justify-center px-4">
+      <div className="w-full max-w-[700px] gap-10 px-6 py-10 flex items-center flex-col h-auto border-2 border-pink-100 rounded-xl bg-black-200 shadow-lg shadow-pink-100/10">
+        <div className="w-full h-auto flex relative justify-center">
           <GoBackButton />
-          <h1 className={"text-4xl text-white"}>
+          <h1 className="text-4xl md:text-5xl text-white font-bold">
             Sign Up on{" "}
-            <span className={"text-gradient font-bold"}>FlameLink</span>
+            <span className="text-gradient font-bold">FlameLink</span>
           </h1>
         </div>
-        <div className={"flex flex-col w-full h-auto gap-4"}>
+        <div className="flex flex-col w-full h-auto gap-5">
           <FormInput
-            title={"Country"}
-            type={"text"}
+            title="Country"
+            type="text"
             register={register("country")}
             error={errors?.country?.message}
           />
           <FormInput
-            title={"City"}
-            type={"text"}
+            title="City"
+            type="text"
             register={register("city")}
             error={errors?.city?.message}
           />
           <DatePickerInput
             initSelectedDate={signUpData.dateOfBirth}
-            title={"Date of birth"}
+            title="Date of birth"
             onChange={onDateOfBirthChange}
             error={errors?.dateOfBirth?.message}
           />
           <ThreeButtonsSelect
-            title={"Gender"}
+            title="Gender"
             options={genderOptions}
             onClick={onGenderChange}
             chosenValue={watch("gender")}
           />
           <ThreeButtonsSelect
-            title={"Preference"}
+            title="Preference"
             options={preferenceOptions}
             onClick={onPreferenceChange}
             chosenValue={watch("preference")}
@@ -109,10 +105,10 @@ const SignUpSecondStep = () => {
 
           <AnimatedButton
             onClick={handleSubmit(onNextStep)}
-            type={"submit"}
-            className={
-              "w-full h-[50px] mt-8 bg-white rounded-xl text-2xl cursor-pointer font-bold uppercase"
-            }
+            type="submit"
+            className="w-full h-[55px] mt-8 bg-white rounded-xl text-2xl cursor-pointer font-bold uppercase transition-all"
+            hoverBackgroundColor="#E80352"
+            hoverTextColor="#FFFFFF"
           >
             Continue
           </AnimatedButton>

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { motion } from "framer-motion";
 
 type SectionContainerProps = {
   children: ReactNode;
@@ -6,9 +7,13 @@ type SectionContainerProps = {
 
 const SectionContainer = ({ children }: SectionContainerProps) => {
   return (
-    <div className={"w-full flex flex-col items-center h-auto gap-8"}>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="w-full max-w-7xl mx-auto px-4 flex flex-col items-center h-auto gap-8 py-6"
+    >
       {children}
-    </div>
+    </motion.div>
   );
 };
 

@@ -34,76 +34,70 @@ const SignUpFirstStep = () => {
   };
 
   return (
-    <Page>
-      <div
-        className={
-          "w-[700px] gap-12 px-4 py-8 flex items-center flex-col h-auto border-2 border-pink-100 rounded-xl"
-        }
-      >
-        <div className={"w-full h-auto flex relative justify-center"}>
+    <Page className="bg-black-100 min-h-screen flex items-center justify-center px-4">
+      <div className="w-full max-w-[700px] gap-10 px-6 py-10 flex items-center flex-col h-auto border-2 border-pink-100 rounded-xl bg-black-200 shadow-lg shadow-pink-100/10">
+        <div className="w-full h-auto flex relative justify-center">
           <GoBackButton />
-          <h1 className={"text-4xl text-white"}>
+          <h1 className="text-4xl md:text-5xl text-white font-bold">
             Sign Up on{" "}
-            <span className={"text-gradient font-bold"}>FlameLink</span>
+            <span className="text-gradient font-bold">FlameLink</span>
           </h1>
         </div>
         <form
           onSubmit={handleSubmit(onNextStep)}
-          className={"flex flex-col w-full h-auto gap-4"}
+          className="flex flex-col w-full h-auto gap-5"
         >
           <FormInput
-            title={"Username"}
-            type={"text"}
+            title="Username"
+            type="text"
             register={register("username")}
             error={errors?.username?.message}
           />
           <FormInput
-            title={"First name"}
-            type={"text"}
+            title="First name"
+            type="text"
             register={register("firstName")}
             error={errors?.firstName?.message}
           />
           <FormInput
-            title={"Last name"}
-            type={"text"}
+            title="Last name"
+            type="text"
             register={register("lastName")}
             error={errors?.lastName?.message}
           />
           <FormInput
-            title={"E-mail address"}
-            type={"email"}
+            title="E-mail address"
+            type="email"
             register={register("email")}
             error={errors?.email?.message}
           />
           <FormInput
-            title={"Password"}
-            type={"password"}
+            title="Password"
+            type="password"
             register={register("password")}
             error={errors?.password?.message}
           />
           <FormInput
-            title={"Confirm password"}
-            type={"password"}
+            title="Confirm password"
+            type="password"
             register={register("confirmPassword")}
             error={errors?.confirmPassword?.message}
           />
 
-          <div
-            className={"w-full h-auto gap-3 flex flex-col justify-center mt-8"}
-          >
+          <div className="w-full h-auto gap-4 flex flex-col justify-center mt-6">
             <AnimatedButton
-              type={"submit"}
-              className={
-                "w-full h-[50px] bg-white rounded-xl text-2xl cursor-pointer font-bold uppercase"
-              }
+              type="submit"
+              className="w-full h-[55px] bg-white rounded-xl text-2xl cursor-pointer font-bold uppercase transition-all"
+              hoverBackgroundColor="#E80352"
+              hoverTextColor="#FFFFFF"
             >
               Continue
             </AnimatedButton>
-            <p className={"text-white text-center text-lg"}>
+            <p className="text-white text-center text-lg mt-2">
               Already have an account?{" "}
               <span
                 onClick={() => navigate("/sign-in")}
-                className={"underline font-bold text-pink-200 cursor-pointer"}
+                className="underline font-bold text-pink-200 cursor-pointer hover:text-pink-300 transition-colors"
               >
                 Sign In
               </span>

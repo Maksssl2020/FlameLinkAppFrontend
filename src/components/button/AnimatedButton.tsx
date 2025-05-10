@@ -9,6 +9,7 @@ type AnimatedButtonProps = {
   hoverBackgroundColor?: string;
   hoverBorderColor?: string;
   hoverTextColor?: string;
+  disabled?: boolean;
 };
 
 const AnimatedButton = ({
@@ -19,11 +20,13 @@ const AnimatedButton = ({
   hoverBackgroundColor = "#E80352",
   hoverBorderColor = "#E80352",
   hoverTextColor = "#0D0D0D",
+  disabled = false,
 }: AnimatedButtonProps) => {
   return (
     <motion.button
       type={type}
       onClick={onClick}
+      disabled={disabled}
       whileHover={{
         borderColor: hoverBorderColor,
         backgroundColor: hoverBackgroundColor,

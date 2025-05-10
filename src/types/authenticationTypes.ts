@@ -18,9 +18,9 @@ export interface RegisterDataState {
 }
 
 export interface AuthenticationState {
-  userId: number;
-  username: string;
-  accessToken: string;
+  userId: number | null;
+  username: string | null;
+  accessToken: string | null;
   roles: string[];
   isAuthenticated: boolean;
 }

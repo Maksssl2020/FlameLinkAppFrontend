@@ -43,6 +43,14 @@ const AccountProfile = () => {
   const { userProfileByUserId, fetchingUserProfileByUserId } =
     useUserProfileByUserIdQuery(authentication?.userId);
 
+  const handleTabChange = (
+    index: number,
+    value: "profilePreview" | "aboutYou" | "photos",
+  ) => {
+    setActiveSection(value);
+    setActiveButton(buttonRefs.current[index]);
+  };
+
   useEffect(() => {
     const index = profileSections.findIndex((s) => s.value === activeSection);
     if (index !== -1) {
@@ -58,43 +66,61 @@ const AccountProfile = () => {
 
   return (
     <Page>
-      <SectionContainer>
-        <SectionBanner title={"Manage Your Profile"}>
-          <div className="relative w-auto mt-auto flex gap-4">
-            {profileSections.map((section: ProfileSection, index) => (
-              <button
-                key={index}
-                // @ts-ignore
-                ref={(el) => (buttonRefs.current[index] = el)} // będziemy potrzebować refa do obliczania pozycji
-                type="button"
-                onClick={() => setActiveSection(section.value)}
-                className={`relative z-10 text-xl font-bold px-2 cursor-pointer`}
-              >
-                {section.title}
-              </button>
-            ))}
+      <div className="bg-black-100 min-h-screen">
+        <SectionContainer>
+          <SectionBanner title="Manage Your Profile">
+            <div className="relative w-auto mt-auto flex gap-6">
+              {profileSections.map((section: ProfileSection, index) => (
+                <button
+                  key={index}
+                  ref={(el) => (buttonRefs.current[index] = el)}
+                  type="button"
+                  onClick={() => handleTabChange(index, section.value)}
+                  className={`relative z-10 text-xl font-bold px-2 cursor-pointer transition-colors ${
+                    activeSection === section.value
+                      ? "text-pink-200"
+                      : "text-white hover:text-pink-300"
+                  }`}
+                >
+                  {section.title}
+                </button>
+              ))}
 
-            <motion.div
-              layoutId="active-underline"
-              className="absolute -bottom-2.5 h-[2px] bg-pink-100 z-0"
-              style={{
-                left: activeButton?.offsetLeft ?? 0,
-                width: activeButton?.offsetWidth ?? 0,
-              }}
-              transition={{ type: "spring", stiffness: 500, damping: 30 }}
-            />
+              <motion.div
+                layoutId="active-underline"
+                className="absolute -bottom-2.5 h-[3px] bg-pink-100 z-0"
+                style={{
+                  left:
+                    activeButton?.offsetLeft ??
+                    buttonRefs.current[0]?.offsetLeft ??
+                    0,
+                  width:
+                    activeButton?.offsetWidth ??
+                    buttonRefs.current[0]?.offsetWidth ??
+                    0,
+                }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+              />
+            </div>
+          </SectionBanner>
+
+          <div className="w-full bg-black-200 rounded-xl border-2 border-pink-100 shadow-lg shadow-pink-100/10 p-6">
+            {activeSection === "profilePreview" && (
+              <AccountProfilePreviewSection
+                userProfile={userProfileByUserId!}
+              />
+            )}
+            {activeSection === "aboutYou" && (
+              <AccountProfileAboutYouSection
+                userProfile={userProfileByUserId!}
+              />
+            )}
+            {activeSection === "photos" && (
+              <AccountProfilePhotosSection userProfile={userProfileByUserId!} />
+            )}
           </div>
-        </SectionBanner>
-        {activeSection === "profilePreview" && (
-          <AccountProfilePreviewSection userProfile={userProfileByUserId!} />
-        )}
-        {activeSection === "aboutYou" && (
-          <AccountProfileAboutYouSection userProfile={userProfileByUserId!} />
-        )}
-        {activeSection === "photos" && (
-          <AccountProfilePhotosSection userProfile={userProfileByUserId!} />
-        )}
-      </SectionContainer>
+        </SectionContainer>
+      </div>
     </Page>
   );
 };

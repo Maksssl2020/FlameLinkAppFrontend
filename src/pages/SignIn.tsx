@@ -30,49 +30,44 @@ const SignIn = () => {
   }
 
   return (
-    <Page>
-      <div
-        className={
-          "w-[700px] gap-12 px-4 py-8 flex items-center flex-col h-auto border-2 border-pink-100 rounded-xl"
-        }
-      >
-        <h1 className={"text-4xl text-white"}>
-          Sign In on{" "}
-          <span className={"text-gradient font-bold"}>FlameLink</span>
+    <Page className="bg-black-100 min-h-screen flex items-center justify-center px-4">
+      <div className="w-full max-w-[700px] gap-10 px-6 py-10 flex items-center flex-col h-auto border-2 border-pink-100 rounded-xl bg-black-200 shadow-lg shadow-pink-100/10">
+        <h1 className="text-4xl md:text-5xl text-white font-bold">
+          Sign In on <span className="text-gradient font-bold">FlameLink</span>
         </h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className={"flex flex-col w-full h-auto gap-4"}
+          className="flex flex-col w-full h-auto gap-6"
         >
           <FormInput
-            title={"Username"}
-            type={"text"}
+            formType={"default"}
+            title="Username"
+            type="text"
             register={register("username")}
             error={errors?.username?.message}
           />
           <FormInput
-            title={"Password"}
-            type={"password"}
+            formType={"default"}
+            title="Password"
+            type="password"
             register={register("password")}
             error={errors?.password?.message}
           />
 
-          <div
-            className={"w-full h-auto gap-3 mt-8 flex flex-col justify-center"}
-          >
+          <div className="w-full h-auto gap-4 mt-8 flex flex-col justify-center">
             <AnimatedButton
-              type={"submit"}
-              className={
-                "w-full h-[50px] bg-white rounded-xl text-2xl cursor-pointer font-bold uppercase"
-              }
+              type="submit"
+              className="w-full h-[55px] text-black-100 bg-white rounded-xl text-2xl cursor-pointer font-bold uppercase"
+              hoverBackgroundColor="#E80352"
+              hoverTextColor="#FFFFFF"
             >
               Sign In
             </AnimatedButton>
-            <p className={"text-white text-center text-lg"}>
+            <p className="text-white text-center text-lg mt-2">
               Don't have an account?{" "}
               <span
                 onClick={() => navigate("/sign-up/step/1")}
-                className={"underline font-bold text-pink-200 cursor-pointer"}
+                className="underline font-bold text-pink-200 cursor-pointer hover:text-pink-300 transition-colors"
               >
                 Sign Up
               </span>

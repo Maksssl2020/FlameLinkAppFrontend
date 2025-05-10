@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { motion } from "framer-motion";
 
 type SectionBannerProps = {
   title: string;
@@ -7,16 +8,23 @@ type SectionBannerProps = {
 
 const SectionBanner = ({ title, children }: SectionBannerProps) => {
   return (
-    <div
-      className={
-        "w-full min-h-[75px] flex items-end border-b-2 p-2 border-gray-200"
-      }
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="w-full min-h-[85px] flex items-end border-b-2 p-3 border-pink-100"
     >
-      <h1 className={"text-4xl uppercase text-gradient "}>{title}</h1>
-      <div className={"w-auto text-white h-auto flex ml-auto mt-auto"}>
+      <motion.h1
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.2 }}
+        className="text-4xl uppercase font-bold text-gradient"
+      >
+        {title}
+      </motion.h1>
+      <div className="w-auto text-white h-auto flex ml-auto mt-auto">
         {children}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

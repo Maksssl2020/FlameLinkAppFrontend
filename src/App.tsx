@@ -16,18 +16,18 @@ import DashboardUserLikes from "./pages/dashboard/DashboardUserLikes.tsx";
 import AccountLayout from "./layout/AccountLayout.tsx";
 import AccountProfile from "./pages/account/AccountProfile.tsx";
 import AdminNewsForm from "./pages/admin/AdminNewsForm.tsx";
+import DashboardUserDislikes from "./pages/dashboard/DashboardUserDislikes.tsx";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/sign-up/step/1" element={<SignUpFirstStep />} />
+        <Route path="/sign-up/step/2" element={<SignUpSecondStep />} />
+        <Route path="/sign-up/step/3" element={<SignUpThirdStep />} />
+        <Route path="/sign-in" element={<SignIn />} />
         <Route element={<Layout />}>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/sign-up/step/1" element={<SignUpFirstStep />} />
-          <Route path="/sign-up/step/2" element={<SignUpSecondStep />} />
-          <Route path="/sign-up/step/3" element={<SignUpThirdStep />} />
-          <Route path="/sign-in" element={<SignIn />} />
-
           <Route element={<DashboardLayout />}>
             <Route
               path={"/dashboard/discover-people"}
@@ -38,6 +38,10 @@ function App() {
             <Route
               path={"/dashboard/liked-people"}
               element={<DashboardUserLikes />}
+            />
+            <Route
+              path={"/dashboard/disliked-people"}
+              element={<DashboardUserDislikes />}
             />
           </Route>
 
