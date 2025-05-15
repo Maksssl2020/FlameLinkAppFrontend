@@ -17,16 +17,22 @@ import AccountLayout from "./layout/AccountLayout.tsx";
 import AccountProfile from "./pages/account/AccountProfile.tsx";
 import AdminNewsForm from "./pages/admin/AdminNewsForm.tsx";
 import DashboardUserDislikes from "./pages/dashboard/DashboardUserDislikes.tsx";
+import About from "./pages/About.tsx";
+import UserProfile from "./pages/UserProfile.tsx";
+import ForumTopic from "./pages/ForumTopic.tsx";
+import DashboardMessages from "./pages/dashboard/DashboardMessages.tsx";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/about" element={<About />} />
         <Route path="/sign-up/step/1" element={<SignUpFirstStep />} />
         <Route path="/sign-up/step/2" element={<SignUpSecondStep />} />
         <Route path="/sign-up/step/3" element={<SignUpThirdStep />} />
         <Route path="/sign-in" element={<SignIn />} />
+
         <Route element={<Layout />}>
           <Route element={<DashboardLayout />}>
             <Route
@@ -43,7 +49,14 @@ function App() {
               path={"/dashboard/disliked-people"}
               element={<DashboardUserDislikes />}
             />
+            <Route
+              path={"/dashboard/messages"}
+              element={<DashboardMessages />}
+            />
           </Route>
+
+          <Route element={<UserProfile />} path={"/user/:userId"} />
+          <Route element={<ForumTopic />} path={"/forum/topic/:topicId"} />
 
           <Route element={<AccountLayout />}>
             <Route path={"/account/overall"} element={<AccountOverall />} />

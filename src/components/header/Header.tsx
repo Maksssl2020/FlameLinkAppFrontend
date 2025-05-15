@@ -1,10 +1,5 @@
 import AnimatedButton from "../button/AnimatedButton.tsx";
-import {
-  HiOutlineLogout,
-  HiOutlineMenu,
-  HiOutlineUser,
-  HiOutlineX,
-} from "react-icons/hi";
+import { HiOutlineUser } from "react-icons/hi";
 import { RxExit } from "react-icons/rx";
 
 import useAuthentication from "../../hooks/useAuthentication.ts";

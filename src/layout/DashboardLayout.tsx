@@ -9,6 +9,7 @@ const sections: SectionType[] = [
   { name: "Your Matches", url: "matches" },
   { name: "Liked People", url: "liked-people" },
   { name: "Disliked People", url: "disliked-people" },
+  { name: "Messages", url: "messages" },
 ];
 
 const DashboardLayout = () => {

@@ -5,15 +5,16 @@ export interface LoginRequest {
 
 export interface RegisterDataState {
   username: string;
+  password: string;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
-  password: string;
-  dateOfBirth: Date | null;
   gender: "Male" | "Female" | "Other";
-  preference: "Males" | "Females" | "Both";
-  country: string;
   city: string;
+  country: string;
+  preference: "Males" | "Females" | "Both";
+  dateOfBirth: Date | null;
+  lookingFor: "";
   interests: string[];
 }
 

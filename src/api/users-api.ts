@@ -1,5 +1,10 @@
 import axiosConfig from "../config/axiosConfig.ts";
-import { ChangePasswordRequest, User, UserParams } from "../types/userTypes.ts";
+import {
+  ChangePasswordRequest,
+  UpdateUserDataRequest,
+  User,
+  UserParams,
+} from "../types/userTypes.ts";
 
 export async function fetchUserById(userId: number): Promise<User> {
   const response = await axiosConfig.get<User>(`users/${userId}`);
@@ -34,4 +39,26 @@ export async function fetchMatchingUsers(params: UserParams) {
   const pagination = paginationHeader ? JSON.parse(paginationHeader) : null;
 
   return { users: response.data, pagination };
+}
+
+export async function handleAccountDataUpdate(data: UpdateUserDataRequest) {
+  const { initialData, dataToUpdate } = data;
+  const formData = new FormData();
+
+  if (initialData.firstName !== dataToUpdate.firstName)
+    formData.append("firstName", dataToUpdate.firstName);
+  if (initialData.lastName !== dataToUpdate.lastName)
+    formData.append("lastName", dataToUpdate.lastName);
+  if (initialData.email !== dataToUpdate.email)
+    formData.append("email", dataToUpdate.email);
+  if (initialData.country !== dataToUpdate.country)
+    formData.append("country", dataToUpdate.country);
+  if (initialData.city !== dataToUpdate.city)
+    formData.append("city", dataToUpdate.city);
+
+  const response = await axiosConfig.patch<void>(
+    "/users/change-account-data",
+    formData,
+  );
+  return response.data;
 }

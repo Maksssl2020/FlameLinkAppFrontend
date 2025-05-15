@@ -3,9 +3,11 @@ import { handleDislikeUser } from "../../api/dislikes-api.ts";
 import { UserRelationshipsRequest } from "../../types/userTypes.ts";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import { useUserFilterParamsStore } from "../../store/userFilterParamsStore.ts";
 
 function useDislikeUserMutation(onSuccess?: () => void) {
   const queryClient = useQueryClient();
+  const { userParams } = useUserFilterParamsStore.getState();
 
   const { mutate: dislikeUser, isPending: dislikingUser } = useMutation({
     mutationKey: ["dislikeUserMutation"],
@@ -15,7 +17,15 @@ function useDislikeUserMutation(onSuccess?: () => void) {
       onSuccess?.();
 
       queryClient.invalidateQueries({
+        queryKey: ["matchingUsers", userParams, variables.sourceUserId],
+      });
+
+      queryClient.invalidateQueries({
         queryKey: ["userLikedUsersData", variables.sourceUserId],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["isUserDislikedData", variables.targetUserId],
       });
     },
     onError: (error: AxiosError) => {

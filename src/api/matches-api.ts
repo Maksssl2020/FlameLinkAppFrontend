@@ -13,6 +13,16 @@ export async function fetchUserLikedUsers(userId: number | string) {
   return response.data;
 }
 
+export async function checkIsLiked(
+  sourceUserId: number | string,
+  targetUserId: number | string,
+) {
+  const response = await axiosConfig.get<boolean>(
+    `matches/${sourceUserId}/is-like/${targetUserId}`,
+  );
+  return response.data;
+}
+
 export async function checkIsMatch(
   sourceUserId: number | string,
   targetUserId: number | string,

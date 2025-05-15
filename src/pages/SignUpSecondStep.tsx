@@ -106,7 +106,7 @@ const SignUpSecondStep = () => {
           <AnimatedButton
             onClick={handleSubmit(onNextStep)}
             type="submit"
-            className="w-full h-[55px] mt-8 bg-white rounded-xl text-2xl cursor-pointer font-bold uppercase transition-all"
+            className="w-full h-[55px] mt-8 text-black-100 bg-white rounded-xl text-2xl cursor-pointer font-bold uppercase "
             hoverBackgroundColor="#E80352"
             hoverTextColor="#FFFFFF"
           >

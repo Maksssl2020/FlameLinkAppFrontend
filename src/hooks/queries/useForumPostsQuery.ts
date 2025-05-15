@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchForumPosts } from "../../api/fodum-posts-api.ts";
+import { fetchForumPosts } from "../../api/forum-posts-api.ts";
 
 function useForumPostsQuery() {
   const { data: forumPosts, isLoading: fetchingForumPosts } = useQuery({

@@ -87,7 +87,7 @@ const SignUpFirstStep = () => {
           <div className="w-full h-auto gap-4 flex flex-col justify-center mt-6">
             <AnimatedButton
               type="submit"
-              className="w-full h-[55px] bg-white rounded-xl text-2xl cursor-pointer font-bold uppercase transition-all"
+              className="w-full text-black-100 h-[55px] bg-white rounded-xl text-2xl cursor-pointer font-bold uppercase "
               hoverBackgroundColor="#E80352"
               hoverTextColor="#FFFFFF"
             >

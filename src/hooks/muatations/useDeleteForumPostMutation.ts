@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { handleDeleteForumPost } from "../../api/fodum-posts-api.ts";
+import { handleDeleteForumPost } from "../../api/forum-posts-api.ts";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 

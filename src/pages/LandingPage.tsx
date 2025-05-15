@@ -71,7 +71,7 @@ const LandingPage = () => {
             <HiOutlineFire className="size-8 text-pink-200" />
             <h1 className="text-2xl font-bold text-gradient">FlameLink</h1>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 select-auto">
             <AnimatedButton
               onClick={() => navigate("/sign-in")}
               className="bg-transparent border-2 border-gray-300 text-white font-medium px-6 py-2 rounded-xl"
@@ -109,7 +109,7 @@ const LandingPage = () => {
             </motion.div>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-4"
+              className="flex flex-col sm:flex-row gap-4 select-auto"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
@@ -132,18 +132,18 @@ const LandingPage = () => {
             </motion.div>
           </div>
 
-          <motion.div
-            className="flex-1 flex justify-center"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <img
-              src="/placeholder.svg?height=500&width=500"
-              alt="FlameLink Platform Preview"
-              className="rounded-2xl border-4 border-pink-100 max-w-full h-auto"
-            />
-          </motion.div>
+          {/*<motion.div*/}
+          {/*  className="flex-1 flex justify-center"*/}
+          {/*  initial={{ opacity: 0, scale: 0.8 }}*/}
+          {/*  animate={{ opacity: 1, scale: 1 }}*/}
+          {/*  transition={{ delay: 0.3 }}*/}
+          {/*>*/}
+          {/*  <img*/}
+          {/*    src="/placeholder.svg?height=500&width=500"*/}
+          {/*    alt="FlameLink Platform Preview"*/}
+          {/*    className="rounded-2xl border-4 border-pink-100 max-w-full h-auto"*/}
+          {/*  />*/}
+          {/*</motion.div>*/}
         </section>
 
         <section className="py-20">
@@ -186,11 +186,9 @@ const LandingPage = () => {
           </div>
 
           <div className="relative">
-            {/* Connection line */}
             <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-pink-100 hidden md:block transform -translate-x-1/2"></div>
 
             <div className="space-y-24 relative">
-              {/* Step 1 */}
               <motion.div
                 className="flex flex-col md:flex-row items-center gap-8"
                 initial={{ opacity: 0, x: -50 }}
@@ -215,11 +213,11 @@ const LandingPage = () => {
                   </div>
                 </div>
                 <div className="md:w-1/2 hidden md:block">
-                  <img
-                    src="/placeholder.svg?height=200&width=300"
-                    alt="Create profile"
-                    className="rounded-xl"
-                  />
+                  {/*<img*/}
+                  {/*  src="/placeholder.svg?height=200&width=300"*/}
+                  {/*  alt="Create profile"*/}
+                  {/*  className="rounded-xl"*/}
+                  {/*/>*/}
                 </div>
               </motion.div>
 
@@ -248,11 +246,11 @@ const LandingPage = () => {
                   </div>
                 </div>
                 <div className="md:w-1/2 hidden md:block">
-                  <img
-                    src="/placeholder.svg?height=200&width=300"
-                    alt="Discover connections"
-                    className="rounded-xl"
-                  />
+                  {/*<img*/}
+                  {/*  src="/placeholder.svg?height=200&width=300"*/}
+                  {/*  alt="Discover connections"*/}
+                  {/*  className="rounded-xl"*/}
+                  {/*/>*/}
                 </div>
               </motion.div>
 
@@ -279,11 +277,11 @@ const LandingPage = () => {
                   </div>
                 </div>
                 <div className="md:w-1/2 hidden md:block">
-                  <img
-                    src="/placeholder.svg?height=200&width=300"
-                    alt="Engage and connect"
-                    className="rounded-xl"
-                  />
+                  {/*<img*/}
+                  {/*  src="/placeholder.svg?height=200&width=300"*/}
+                  {/*  alt="Engage and connect"*/}
+                  {/*  className="rounded-xl"*/}
+                  {/*/>*/}
                 </div>
               </motion.div>
             </div>
@@ -312,11 +310,11 @@ const LandingPage = () => {
                   "{testimonial.content}"
                 </p>
                 <div className="flex items-center gap-4">
-                  <img
-                    src={testimonial.avatar || "/placeholder.svg"}
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-full border-2 border-pink-100"
-                  />
+                  {/*<img*/}
+                  {/*  src={testimonial.avatar || "/placeholder.svg"}*/}
+                  {/*  alt={testimonial.name}*/}
+                  {/*  className="w-12 h-12 rounded-full border-2 border-pink-100"*/}
+                  {/*/>*/}
                   <div>
                     <h4 className="font-bold">{testimonial.name}</h4>
                     <p className="text-gray-300">{testimonial.role}</p>

@@ -3,9 +3,11 @@ import { UserRelationshipsRequest } from "../../types/userTypes.ts";
 import { handleLikeUser } from "../../api/matches-api.ts";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import { useUserFilterParamsStore } from "../../store/userFilterParamsStore.ts";
 
 function useLikeUserMutation(onSuccess?: () => void) {
   const queryClient = useQueryClient();
+  const { userParams } = useUserFilterParamsStore.getState();
 
   const { mutate: likeUser, isPending: likingUser } = useMutation({
     mutationKey: ["likeUserMutation"],
@@ -15,7 +17,11 @@ function useLikeUserMutation(onSuccess?: () => void) {
       onSuccess?.();
 
       queryClient.invalidateQueries({
-        queryKey: ["matchingUsers", variables.sourceUserId],
+        queryKey: ["matchingUsers", userParams, variables.sourceUserId],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["isUserLikedData", variables.targetUserId],
       });
     },
     onError: (error: AxiosError) => {

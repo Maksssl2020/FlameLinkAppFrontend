@@ -15,6 +15,10 @@ function useRemoveLikeMutation() {
       queryClient.invalidateQueries({
         queryKey: ["userLikedUsersData", variables.sourceUserId],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: ["isUserLikedData", variables.targetUserId],
+      });
     },
     onError: (error: AxiosError) => {
       const errorMessage = error.message;

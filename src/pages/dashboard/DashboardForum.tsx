@@ -1,18 +1,14 @@
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Page from "../../animations/Page.tsx";
 import { useState } from "react";
 import {
   HiOutlineChat,
-  HiOutlineHeart,
-  HiOutlineClock,
-  HiOutlineUser,
-  HiOutlineTag,
+  HiOutlineFilter,
   HiOutlinePlus,
   HiOutlineSearch,
-  HiOutlineFilter,
+  HiOutlineTag,
 } from "react-icons/hi";
 import AnimatedButton from "../../components/button/AnimatedButton.tsx";
-import { motion } from "framer-motion";
 import SectionBanner from "../../components/banner/SectionBanner.tsx";
 import Modal from "../../components/modal/Modal.tsx";
 import FormTextArea from "../../components/textarea/FormTextArea.tsx";
@@ -24,6 +20,7 @@ import useAddForumPostMutation from "../../hooks/muatations/useAddForumPostMutat
 import { useForm } from "react-hook-form";
 import { ForumPostCategory } from "../../types/forumPostTypes.ts";
 import useAuthentication from "../../hooks/useAuthentication.ts";
+import ForumPostCard from "../../components/card/ForumPostCard.tsx";
 
 type ForumCategoryToSelect = {
   name: string;
@@ -97,13 +94,15 @@ const DashboardForum = () => {
   };
 
   const onSubmit = ({ title, content }: { title: string; content: string }) => {
-    addForumPost({
-      userId: userId,
-      content: content,
-      title: title,
-      category: createPostCategory,
-    });
-    setIsNewTopicModalOpen(false);
+    if (userId) {
+      addForumPost({
+        userId: userId,
+        content: content,
+        title: title,
+        category: createPostCategory,
+      });
+      setIsNewTopicModalOpen(false);
+    }
   };
 
   if (fetchingForumPosts || addingForumPost) {
@@ -229,74 +228,15 @@ const DashboardForum = () => {
             </div>
           </div>
 
-          {/* Topics list */}
           <div className="flex-1">
             {filteredTopics !== undefined && filteredTopics?.length > 0 ? (
               <div className="space-y-4">
                 {filteredTopics?.map((topic) => (
-                  <motion.div
-                    key={topic.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-black-200 rounded-xl border-2 border-gray-200 overflow-hidden hover:border-pink-100 transition-all"
-                  >
-                    <div className="p-6">
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex-1">
-                          <h3 className="text-xl font-bold text-white mb-1 flex items-center">
-                            {topic.title}
-                          </h3>
-                          <div className="flex items-center text-gray-300 text-sm">
-                            <div className="flex items-center mr-4">
-                              <HiOutlineUser className="size-4 mr-1" />
-                              <span>{topic.authorName}</span>
-                            </div>
-                            <div className="flex items-center mr-4">
-                              <HiOutlineClock className="size-4 mr-1" />
-                              <span>
-                                {topic.createdAt.toLocaleString().split("T")[0]}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          className={`px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r ${getCategoryColor(topic.category)} text-black-100`}
-                        >
-                          {
-                            ForumCategoriesToSelect.find(
-                              (t) => t.category === topic.category,
-                            )?.name
-                          }
-                        </div>
-                      </div>
-
-                      <p className="text-gray-300 mb-4">
-                        {topic.content.slice(0, 125).concat("...")}
-                      </p>
-
-                      <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-4 text-sm text-gray-300">
-                          {/*<div className="flex items-center">*/}
-                          {/*  <HiOutlineChat className="size-4 mr-1" />*/}
-                          {/*  <span>{topic.replies} replies</span>*/}
-                          {/*</div>*/}
-                          <div className="flex items-center">
-                            <HiOutlineHeart className="size-4 mr-1" />
-                            <span>{topic.likes} likes</span>
-                          </div>
-                        </div>
-
-                        <AnimatedButton
-                          className="px-4 py-2 rounded-lg border-2 border-gray-300 text-white font-medium"
-                          hoverBackgroundColor="transparent"
-                          hoverBorderColor="#FE5487"
-                          hoverTextColor="#FE5487"
-                        >
-                          View Topic
-                        </AnimatedButton>
-                      </div>
-                    </div>
-                  </motion.div>
+                  <ForumPostCard
+                    topic={topic}
+                    topicColor={getCategoryColor(topic.category)}
+                    topicCategory={topic.category}
+                  />
                 ))}
               </div>
             ) : (

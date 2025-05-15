@@ -10,6 +10,7 @@ import calculateAge from "../../utils/calculateAge.ts";
 import { useAuthStore } from "../../store/authStore.ts";
 import Spinner from "../spinner/Spinner.tsx";
 import useRemoveLikeMutation from "../../hooks/muatations/useRemoveLikeMutation.ts";
+import { useNavigate } from "react-router-dom";
 
 type LikedUserCardProps = {
   user: User;
@@ -17,6 +18,7 @@ type LikedUserCardProps = {
 
 const LikedUserCard = ({ user }: LikedUserCardProps) => {
   const { userId } = useAuthStore.getState().authentication;
+  const navigate = useNavigate();
 
   const age = calculateAge(user.dateOfBirth.toLocaleString());
   const displayName = `${user.firstName} ${user.lastName}`;
@@ -42,6 +44,7 @@ const LikedUserCard = ({ user }: LikedUserCardProps) => {
 
   return (
     <motion.div
+      onClick={() => navigate(`/user/${user.id}`)}
       key={user.id}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -68,14 +71,12 @@ const LikedUserCard = ({ user }: LikedUserCardProps) => {
           </div>
         )}
         <div className="absolute top-3 right-3 flex gap-2">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+          <AnimatedButton
             onClick={() => onRemoveLikeClick()}
             className="size-10 rounded-full bg-black-100/80 backdrop-blur-sm flex items-center justify-center text-white border border-gray-200"
           >
             <HiOutlineX className="size-5" />
-          </motion.button>
+          </AnimatedButton>
         </div>
         {/*<div className="absolute bottom-3 left-3 bg-gradient-to-r from-pink-400 to-pink-200 text-black-100 font-bold px-3 py-1 rounded-full text-sm">*/}
         {/*  {user.matchPercentage}% Match*/}
@@ -112,6 +113,7 @@ const LikedUserCard = ({ user }: LikedUserCardProps) => {
           hoverBackgroundColor="transparent"
           hoverBorderColor="#FE5487"
           hoverTextColor="#FE5487"
+          onClick={() => navigate(`/user/${user.id}`)}
         >
           <HiOutlineHeart className="size-4" />
           <span>View Profile</span>

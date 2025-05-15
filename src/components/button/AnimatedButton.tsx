@@ -25,14 +25,17 @@ const AnimatedButton = ({
   return (
     <motion.button
       type={type}
-      onClick={onClick}
+      onClick={(event) => {
+        event.stopPropagation();
+        onClick?.();
+      }}
       disabled={disabled}
       whileHover={{
         borderColor: hoverBorderColor,
         backgroundColor: hoverBackgroundColor,
         color: hoverTextColor,
       }}
-      className={`flex justify-center items-center ${className}`}
+      className={`flex justify-center items-center cursor-pointer select-auto ${className}`}
     >
       {children}
     </motion.button>

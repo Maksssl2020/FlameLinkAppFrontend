@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { UploadProfileMainPhotoRequest } from "../../types/userProfileTypes.ts";
+import { UploadProfilePhotoRequest } from "../../types/userProfileTypes.ts";
 import { handleUploadProfileMainPhoto } from "../../api/users-profiles-api.ts";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "../../types/types.ts";
@@ -15,7 +15,7 @@ function useUploadProfileMainPhotoMutation(onSuccess?: () => void) {
     isPending: uploadingProfileMainPhoto,
   } = useMutation({
     mutationKey: ["uploadProfileMainPhoto"],
-    mutationFn: (data: UploadProfileMainPhotoRequest) =>
+    mutationFn: (data: UploadProfilePhotoRequest) =>
       handleUploadProfileMainPhoto(data),
     onSuccess: () => {
       toast.success("Upload profile photo successfully.");

@@ -1,6 +1,5 @@
 import Page from "../../animations/Page.tsx";
 import { UserProfile } from "../../types/userProfileTypes.ts";
-import { motion } from "framer-motion";
 import {
   HiOutlineCheck,
   HiOutlinePencil,
@@ -8,6 +7,8 @@ import {
 } from "react-icons/hi2";
 import { useState } from "react";
 import AnimatedButton from "../button/AnimatedButton.tsx";
+import useUpdateUserProfileMutation from "../../hooks/muatations/useUpdateUserProfileMutation.ts";
+import Spinner from "../spinner/Spinner.tsx";
 
 type AccountProfileAboutYouSectionProps = {
   userProfile: UserProfile;
@@ -16,23 +17,31 @@ type AccountProfileAboutYouSectionProps = {
 const AccountProfileAboutYouSection = ({
   userProfile,
 }: AccountProfileAboutYouSectionProps) => {
+  const initialBioText = userProfile.bio;
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [bioText, setBioText] = useState<string>(userProfile.bio || "");
-  const [saveSuccess, setSaveSuccess] = useState(false);
 
-  const handleSave = () => {
-    // Simulate saving
-    setTimeout(() => {
-      setIsEditing(false);
-      setSaveSuccess(true);
-      setTimeout(() => setSaveSuccess(false), 3000);
-    }, 500);
-  };
+  const { updateUserProfile, updatingUserProfile } =
+    useUpdateUserProfileMutation();
 
   const handleCancel = () => {
     setBioText(userProfile.bio || "");
     setIsEditing(false);
   };
+
+  const onSubmit = () => {
+    if (initialBioText !== bioText) {
+      updateUserProfile({
+        bio: bioText,
+      });
+    }
+
+    setIsEditing(false);
+  };
+
+  if (updatingUserProfile) {
+    return <Spinner />;
+  }
 
   return (
     <Page>
@@ -40,17 +49,6 @@ const AccountProfileAboutYouSection = ({
         <div className="w-full h-auto flex flex-col gap-6">
           <div className="flex justify-between items-center">
             <h3 className="text-2xl font-bold text-white">About You</h3>
-            {saveSuccess && (
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0 }}
-                className="text-green-100 flex items-center gap-2 bg-black-100 px-3 py-1 rounded-lg"
-              >
-                <HiOutlineCheck className="size-5" />
-                <span>Saved successfully</span>
-              </motion.div>
-            )}
           </div>
 
           <div className="w-full relative rounded-xl min-h-[500px] border-2 border-pink-100 overflow-hidden bg-black-100">
@@ -73,7 +71,7 @@ const AccountProfileAboutYouSection = ({
               <>
                 <div className="absolute right-3 top-3 flex gap-2 z-10">
                   <AnimatedButton
-                    onClick={handleSave}
+                    onClick={onSubmit}
                     className="cursor-pointer size-12 flexitems-center justify-center text-white rounded-full border-2 border-green-100 bg-black-200"
                     hoverBackgroundColor="#0DB063"
                     hoverTextColor="#FFFFFF"

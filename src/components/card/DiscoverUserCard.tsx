@@ -12,6 +12,7 @@ import useLikeUserMutation from "../../hooks/muatations/useLikeUserMutation.ts";
 import useDislikeUserMutation from "../../hooks/muatations/useDislikeUserMutation.ts";
 import Spinner from "../spinner/Spinner.tsx";
 import { useAuthStore } from "../../store/authStore.ts";
+import { useNavigate } from "react-router-dom";
 
 type DiscoverUserCardProps = {
   user: User;
@@ -19,6 +20,7 @@ type DiscoverUserCardProps = {
 
 const DiscoverUserCard = ({ user }: DiscoverUserCardProps) => {
   const { userId } = useAuthStore.getState().authentication;
+  const navigate = useNavigate();
 
   const age = calculateAge(user.dateOfBirth.toLocaleString());
   const displayName = `${user.firstName} ${user.lastName}`;
@@ -54,6 +56,7 @@ const DiscoverUserCard = ({ user }: DiscoverUserCardProps) => {
 
   return (
     <motion.div
+      onClick={() => navigate(`/user/${user.id}`)}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9 }}
@@ -125,7 +128,7 @@ const DiscoverUserCard = ({ user }: DiscoverUserCardProps) => {
 
         <div className="mt-auto flex gap-2">
           <AnimatedButton
-            onClick={() => onDislikeClick()}
+            onClick={onDislikeClick}
             className="flex-1 py-3 rounded-lg border-2 border-gray-300 text-white font-medium flex items-center justify-center"
             hoverBackgroundColor="transparent"
             hoverBorderColor="#FE5487"
@@ -134,7 +137,7 @@ const DiscoverUserCard = ({ user }: DiscoverUserCardProps) => {
             <HiOutlineX className="size-5" />
           </AnimatedButton>
           <AnimatedButton
-            onClick={() => onLikeClick()}
+            onClick={onLikeClick}
             className="flex-1 py-3 rounded-lg bg-gradient-to-r from-pink-400 via-pink-300 to-pink-200 text-black-100 font-medium flex items-center justify-center"
             hoverBackgroundColor="#E80352"
             hoverTextColor="#FFFFFF"

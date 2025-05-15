@@ -9,7 +9,6 @@ function useMatchingUsersQuery(params: UserParams) {
   const { data: matchingUsers, isLoading: fetchingMatchingUsers } = useQuery({
     queryKey: ["matchingUsers", params, userId],
     queryFn: () => fetchMatchingUsers(params),
-    // enabled: !!params.userUsername,
   });
 
   return { matchingUsers, fetchingMatchingUsers };

@@ -9,6 +9,7 @@ import useInterestSelection from "../../hooks/useInterestSelection.ts";
 import InterestCard from "../card/InterestCard.tsx";
 import { UserParams } from "../../types/userTypes.ts";
 import useAuthentication from "../../hooks/useAuthentication.ts";
+import { useUserFilterParamsStore } from "../../store/userFilterParamsStore.ts";
 
 type FilterPeoplePanelProps = {
   onClose?: () => void;
@@ -22,6 +23,8 @@ const FilterPeoplePanel = ({
   initialFilters,
 }: FilterPeoplePanelProps) => {
   const { username } = useAuthentication();
+  const { setUserParams } = useUserFilterParamsStore.getState();
+
   const [minAgeValue, setMinAgeValue] = useState<number>(
     initialFilters?.minAge ?? 20,
   );
@@ -58,6 +61,7 @@ const FilterPeoplePanel = ({
       pageSize: 20,
       pageNumber: 0,
     };
+    setUserParams(params);
     onSubmit?.(params);
     onClose?.();
   };

@@ -53,7 +53,7 @@ const SignUpThirdStep = () => {
 
         <AnimatedButton
           onClick={() => signUp()}
-          className="w-full h-[65px] bg-gradient-to-r from-pink-400 via-pink-300 to-pink-200 rounded-xl cursor-pointer text-black-100 text-2xl font-bold transition-all"
+          className="w-full h-[65px] bg-gradient-to-r from-pink-400 via-pink-300 to-pink-200 rounded-xl cursor-pointer text-black-100 text-2xl font-bold "
           hoverBackgroundColor="#E80352"
           hoverTextColor="#FFFFFF"
           type="submit"

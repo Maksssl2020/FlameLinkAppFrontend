@@ -13,9 +13,22 @@ export interface User {
   preference: string;
   dateOfBirth: Date;
   lastActive: Date;
-  createdAt: Date;
+  createdAt: string;
   interests: Interest[];
   mainPhoto?: Image;
+}
+
+export interface UserDataToUpdate {
+  email: string;
+  firstName: string;
+  lastName: string;
+  city: string;
+  country: string;
+}
+
+export interface UpdateUserDataRequest {
+  initialData: UserDataToUpdate;
+  dataToUpdate: UserDataToUpdate;
 }
 
 export interface ChangePasswordRequest {

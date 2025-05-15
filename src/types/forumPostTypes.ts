@@ -21,7 +21,7 @@ export interface ForumPost {
   title: string;
   content: string;
   category: ForumPostCategory;
-  createdAt: Date;
+  createdAt: string;
   likes: number;
   authorImage?: Image;
 }

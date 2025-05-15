@@ -34,34 +34,30 @@ const FormInput = ({
   canShowPassword = true,
   onEditClick,
 }: FormInputProps) => {
-  const [isEditing, setIsEditing] = useState(!readOnly);
+  const [isReadOnly, setIsReadOnly] = useState(readOnly);
   const [showPassword, setShowPassword] = useState(false);
   const [inputType, setInputType] = useState(type);
 
-  const handleTogglePassword = () => {
-    setShowPassword(!showPassword);
-    setInputType(showPassword ? "password" : "text");
-  };
-
-  const handleEditClick = () => {
-    if (type === "password") {
-      onEditClick?.();
-    } else {
-      setIsEditing(!isEditing);
+  const handleButtonClick = () => {
+    if (type === "password" && showPassword) {
+      setShowPassword(false);
+      setInputType("password");
+    } else if (type === "password" && !showPassword) {
+      setShowPassword(true);
+      setInputType("text");
     }
   };
 
   const getBorderColor = () => {
     if (error) return "#fb2c36";
-    if (formType === "immutable") return "#292929";
-    if (!isEditing) return "#292929";
+    if (isReadOnly) return "#292929";
     return "#FE5487";
   };
 
   return (
-    <div className="flex flex-col gap-2 mb-4">
-      <label className="text-white text-lg font-medium">{title}</label>
-      <div className="relative">
+    <div className="flex flex-col gap-2 mb-4 w-auto h-auto">
+      <label className="ml-2 text-white text-lg font-medium">{title}</label>
+      <div className={"w-full flex items-center h-[50px] relative"}>
         <motion.input
           defaultValue={defaultValue}
           onChange={(e) => onChange?.(e.target.value)}
@@ -69,42 +65,51 @@ const FormInput = ({
           initial={{ borderColor: getBorderColor() }}
           animate={{ borderColor: getBorderColor() }}
           type={inputType}
-          readOnly={!isEditing || readOnly}
-          disabled={!isEditing || readOnly}
+          readOnly={isReadOnly}
+          disabled={isReadOnly}
           className={`w-full h-[55px] bg-black-100 border-2 rounded-xl px-4 text-white ${
-            !isEditing || readOnly ? "opacity-80" : ""
+            isReadOnly ? "opacity-80" : ""
           }`}
           {...register}
         />
 
         {type === "password" && canShowPassword && (
           <button
-            type="button"
-            onClick={handleTogglePassword}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-pink-200 transition-colors"
+            type={"button"}
+            onClick={handleButtonClick}
+            className={
+              "absolute right-0 size-10 flex items-center justify-center text-pink-200"
+            }
           >
             {showPassword ? (
-              <HiOutlineEyeSlash className="size-5" />
+              <HiOutlineEyeSlash className={"size-7"} />
             ) : (
-              <HiOutlineEye className="size-5" />
+              <HiOutlineEye className={"size-7"} />
             )}
           </button>
         )}
 
-        {formType !== "immutable" && (
+        {formType === "account" && (
           <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            type="button"
-            onClick={handleEditClick}
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-pink-200 transition-colors"
+            animate={isReadOnly ? { color: "#565656" } : { color: "#FE5487" }}
+            type={"button"}
+            onClick={() => {
+              if (type !== "password") {
+                setIsReadOnly(!isReadOnly);
+              } else {
+                onEditClick?.();
+              }
+            }}
+            className={
+              "absolute right-0 cursor-pointer size-10 flex items-center justify-center text-pink-200"
+            }
           >
-            <HiOutlinePencil className="size-5" />
+            <HiOutlinePencil className={"size-7"} />
           </motion.button>
         )}
       </div>
 
-      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+      <p className={"text-lg text-red-500 h-[35px]"}>{error && error}</p>
     </div>
   );
 };

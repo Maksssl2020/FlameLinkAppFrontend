@@ -71,7 +71,7 @@ const SelectWithSearchbar = ({
       animate={isDropdownOpen ? "open" : "closed"}
       ref={selectRef}
       className={
-        "bg-black-200 relative flex h-[50px] w-[350px] cursor-pointer flex-col rounded-lg border-2"
+        "bg-black-200 relative flex h-[50px] w-full cursor-pointer flex-col rounded-lg border-2"
       }
     >
       <input

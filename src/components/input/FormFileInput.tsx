@@ -12,6 +12,8 @@ type FormFileInputProps = {
   onChangeMultiple?: (value: File[] | undefined) => void;
   multiple?: boolean;
   maxFiles?: number;
+  onRemove?: (index: number) => void;
+  selectedFiles?: File[];
 };
 
 const FormFileInput = ({
@@ -22,10 +24,11 @@ const FormFileInput = ({
   inputWidth = "w-[150px]",
   inputHeight = "h-[250px]",
   multiple = false,
-  maxFiles = 3,
+  maxFiles = 6,
+  onRemove,
+  selectedFiles = [],
 }: FormFileInputProps) => {
   const [isDraggedOver, setIsDraggedOver] = useState(false);
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const handleFiles = (newFiles: FileList | null) => {
     if (!newFiles || newFiles.length === 0) return;
@@ -37,23 +40,24 @@ const FormFileInput = ({
         0,
         maxFiles,
       );
-      setSelectedFiles(combinedFiles);
       onChangeMultiple?.(combinedFiles);
     } else {
-      setSelectedFiles([filesArray[0]]);
       onChange?.(filesArray[0]);
     }
   };
 
   const removeFile = (index: number) => {
-    const updatedFiles = [...selectedFiles];
-    updatedFiles.splice(index, 1);
-    setSelectedFiles(updatedFiles);
-
-    if (multiple) {
-      onChangeMultiple?.(updatedFiles.length > 0 ? updatedFiles : undefined);
+    if (onRemove) {
+      onRemove(index);
     } else {
-      onChange?.(updatedFiles.length > 0 ? updatedFiles[0] : undefined);
+      const updatedFiles = [...selectedFiles];
+      updatedFiles.splice(index, 1);
+
+      if (multiple) {
+        onChangeMultiple?.(updatedFiles.length > 0 ? updatedFiles : undefined);
+      } else {
+        onChange?.(updatedFiles.length > 0 ? updatedFiles[0] : undefined);
+      }
     }
   };
 
@@ -105,30 +109,30 @@ const FormFileInput = ({
           onChange={(event) => handleFiles(event.target.files)}
           multiple={multiple}
         />
-
-        {selectedFiles.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-2">
-            {selectedFiles.map((file, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-2 bg-black-100 border border-gray-200 rounded-lg px-3 py-1"
-              >
-                <HiOutlineDocumentAdd className="size-4 text-pink-200" />
-                <span className="text-white text-sm truncate max-w-[150px]">
-                  {file.name}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => removeFile(index)}
-                  className="text-gray-300 hover:text-pink-200"
-                >
-                  <HiOutlineX className="size-4" />
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
+
+      {selectedFiles.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-2">
+          {selectedFiles.map((file, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-2 bg-black-100 border border-gray-200 rounded-lg px-3 py-1"
+            >
+              <HiOutlineDocumentAdd className="size-4 text-pink-200" />
+              <span className="text-white text-sm truncate max-w-[150px]">
+                {file.name}
+              </span>
+              <button
+                type="button"
+                onClick={() => removeFile(index)}
+                className="text-gray-300 hover:text-pink-200"
+              >
+                <HiOutlineX className="size-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
       {error && <p className="text-red-500 text-sm">{error}</p>}
     </div>

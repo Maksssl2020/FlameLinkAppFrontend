@@ -27,7 +27,7 @@ const InterestCard = ({
           : { borderColor: "#292929", backgroundColor, color: "#FFFFFF" }
       }
       onClick={() => onClick?.(interestName)}
-      className="px-4 py-2 rounded-full border-2 text-white font-medium cursor-pointer transition-all"
+      className="px-4 py-2 rounded-full border-2 text-white font-medium  cursor-pointer"
     >
       {interestName}
     </motion.div>

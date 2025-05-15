@@ -1,26 +1,94 @@
 import Page from "../../animations/Page.tsx";
-import { UserProfile } from "../../types/userProfileTypes.ts";
+import { LookingForType, UserProfile } from "../../types/userProfileTypes.ts";
 import {
-  HiOutlineUser,
-  HiOutlineMapPin,
-  HiOutlineHeart,
+  HiOutlineEye,
   HiOutlineFire,
+  HiOutlineHeart,
+  HiOutlineMapPin,
+  HiOutlinePencil,
+  HiOutlineUser,
 } from "react-icons/hi2";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import AnimatedButton from "../button/AnimatedButton.tsx";
+import { useEffect, useRef, useState } from "react";
+import ManageInterestsPanel from "../panel/ManageInterestsPanel.tsx";
+import Modal from "../modal/Modal.tsx";
+import { isTextArrayEqual } from "../../utils/isArrayEqual.ts";
+import ChangeLookingForStatusPanel from "../panel/ChangeLookingForStatusPanel.tsx";
+import useUpdateUserProfileMutation from "../../hooks/muatations/useUpdateUserProfileMutation.ts";
+import Spinner from "../spinner/Spinner.tsx";
 
 type AccountProfilePreviewSectionProps = {
   userProfile: UserProfile;
 };
 
+type InitialUserProfileData = {
+  bio?: string;
+  interests: string[];
+  lookingFor: LookingForType;
+};
+
 const AccountProfilePreviewSection = ({
   userProfile,
 }: AccountProfilePreviewSectionProps) => {
-  const interests = userProfile.interests || [
-    "Music",
-    "Travel",
-    "Photography",
-    "Cooking",
-  ];
+  const [isManageInterestsPanelOpen, setIsManageInterestsPanelOpen] =
+    useState<boolean>(false);
+  const initialUserData = useRef<InitialUserProfileData>({
+    bio: userProfile.bio,
+    interests: userProfile.interests.map((interest) => interest.interestName),
+    lookingFor: userProfile.lookingFor,
+  });
+
+  const [interestsToUpdate, setInterestsToUpdate] = useState<string[]>(
+    userProfile.interests.map((interest) => interest.interestName),
+  );
+  const [
+    isChangeLookingForStatusPanelOpen,
+    setIsChangeLookingForStatusPanelOpen,
+  ] = useState<boolean>(false);
+  const [chosenLookingForStatus, setChosenLookingForStatus] =
+    useState<LookingForType>(userProfile.lookingFor);
+  const [isChange, setIsChange] = useState<boolean>(false);
+
+  const { updateUserProfile, updatingUserProfile } =
+    useUpdateUserProfileMutation();
+
+  useEffect(() => {
+    const interestsChanged = !isTextArrayEqual(
+      initialUserData.current.interests,
+      interestsToUpdate,
+    );
+    const lookingForChanged =
+      chosenLookingForStatus !== initialUserData.current.lookingFor;
+
+    setIsChange(interestsChanged || lookingForChanged);
+  }, [interestsToUpdate, chosenLookingForStatus]);
+
+  const onSubmit = () => {
+    if (interestsToUpdate.length > 0) {
+      updateUserProfile({
+        interests: isTextArrayEqual(
+          initialUserData.current.interests,
+          interestsToUpdate,
+        )
+          ? []
+          : interestsToUpdate,
+        lookingFor: chosenLookingForStatus,
+      });
+
+      initialUserData.current = {
+        bio: userProfile.bio,
+        interests: interestsToUpdate,
+        lookingFor: chosenLookingForStatus,
+      };
+
+      setIsChange(false);
+    }
+  };
+
+  if (updatingUserProfile) {
+    return <Spinner />;
+  }
 
   return (
     <Page>
@@ -80,45 +148,85 @@ const AccountProfilePreviewSection = ({
             </p>
           </div>
 
-          <div className="bg-black-100 rounded-xl p-6 border border-gray-200">
+          <div className="relative bg-black-100 rounded-xl p-6 border border-gray-200">
+            <AnimatedButton
+              onClick={() => setIsManageInterestsPanelOpen(true)}
+              className="absolute right-3 top-3 cursor-pointer size-10 flex items-center justify-center text-white rounded-full border-2 border-pink-100 z-10 bg-black-200"
+              hoverBackgroundColor="#E80352"
+              hoverTextColor="#FFFFFF"
+            >
+              <HiOutlinePencil className="size-5" />
+            </AnimatedButton>
             <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
               <HiOutlineFire className="size-6 text-pink-200" />
               My Interests
             </h3>
             <div className="flex flex-wrap gap-3">
-              {interests.map((interest, index) => (
+              {userProfile.interests.map((interest, index) => (
                 <motion.div
                   key={index}
                   className="px-4 py-2 bg-black-200 text-pink-200 rounded-full border border-pink-100"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {interest}
+                  {interest.interestName}
                 </motion.div>
               ))}
             </div>
           </div>
 
-          <div className="bg-black-100 rounded-xl p-6 border border-gray-200">
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Profile Completeness
+          <div className="bg-black-100 relative rounded-xl p-6 border border-gray-200">
+            <AnimatedButton
+              onClick={() => setIsChangeLookingForStatusPanelOpen(true)}
+              className="absolute right-3 top-3 cursor-pointer size-10 flex items-center justify-center text-white rounded-full border-2 border-pink-100 z-10 bg-black-200"
+              hoverBackgroundColor="#E80352"
+              hoverTextColor="#FFFFFF"
+            >
+              <HiOutlinePencil className="size-5" />
+            </AnimatedButton>
+            <h3 className=" text-2xl font-bold text-white mb-4 flex items-center gap-2">
+              <HiOutlineEye className="size-6 text-pink-200" />
+              Looking For
             </h3>
-            <div className="w-full bg-gray-200 rounded-full h-4 mb-3">
-              <motion.div
-                className="bg-gradient-to-r from-pink-400 via-pink-300 to-pink-200 h-4 rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: userProfile.mainPhoto ? "80%" : "40%" }}
-                transition={{ duration: 1, ease: "easeOut" }}
-              />
-            </div>
-            <div className="text-gray-300">
-              {userProfile.mainPhoto
-                ? "Your profile is almost complete! Add more photos to increase visibility."
-                : "Add a profile photo to significantly improve your profile completeness."}
-            </div>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              {userProfile.lookingFor || ""}
+            </p>
+          </div>
+          <div className={"w-full h-auto justify-end flex mt-auto"}>
+            {isChange && (
+              <AnimatedButton
+                onClick={onSubmit}
+                className={
+                  "h-[50px] border-2 px-8 rounded-lg bg-gradient-to-r from-pink-400 via-pink-300 to-pink-200 text-black-100"
+                }
+              >
+                Save Changes
+              </AnimatedButton>
+            )}
           </div>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isManageInterestsPanelOpen && (
+          <Modal>
+            <ManageInterestsPanel
+              interests={userProfile.interests}
+              onClose={() => setIsManageInterestsPanelOpen(false)}
+              onConfirm={(interests) => setInterestsToUpdate(interests)}
+            />
+          </Modal>
+        )}
+        {isChangeLookingForStatusPanelOpen && (
+          <Modal>
+            <ChangeLookingForStatusPanel
+              onClose={() => setIsChangeLookingForStatusPanelOpen(false)}
+              lookingForStatus={chosenLookingForStatus}
+              onConfirm={(type) => setChosenLookingForStatus(type)}
+            />
+          </Modal>
+        )}
+      </AnimatePresence>
     </Page>
   );
 };

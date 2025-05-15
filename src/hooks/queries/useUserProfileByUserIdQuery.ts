@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchUserProfileByUserId } from "../../api/users-profiles-api.ts";
 
-function useUserProfileByUserIdQuery(userId?: number) {
+function useUserProfileByUserIdQuery(userId?: number | string | null) {
   const { data: userProfileByUserId, isLoading: fetchingUserProfileByUserId } =
     useQuery({
       queryKey: ["userProfile", userId],

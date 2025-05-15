@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { ForumPostRequest } from "../../types/forumPostTypes.ts";
-import { handleCreateForumPost } from "../../api/fodum-posts-api.ts";
+import { handleCreateForumPost } from "../../api/forum-posts-api.ts";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 

@@ -10,8 +10,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import Spinner from "../../components/spinner/Spinner.tsx";
 import Pagination from "../../components/pagination/Pagination.tsx";
 import DislikedUserCard from "../../components/card/DislikedUserCard.tsx";
+import useUserDislikedUsers from "../../hooks/queries/useUserDislikedUsers.ts";
+import useAuthentication from "../../hooks/useAuthentication.ts";
 
-// Mock data for disliked users
 const DISLIKED_USERS = [
   {
     id: 1,
@@ -98,119 +99,33 @@ const DISLIKED_USERS = [
 const ITEMS_PER_PAGE = 8;
 
 const DashboardUserDislikes = () => {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const userId = useAuthentication().userId;
   const [allDislikedUsers, setAllDislikedUsers] = useState(DISLIKED_USERS);
-  const [sortBy, setSortBy] = useState<"recent" | "match">("recent");
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
 
-  // Calculate pagination
   const totalPages = Math.ceil(allDislikedUsers.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const dislikedUsers = allDislikedUsers.slice(startIndex, endIndex);
-
-  const handleRemoveDislike = (userId: number) => {
-    setAllDislikedUsers(allDislikedUsers.filter((user) => user.id !== userId));
-  };
-
-  const handleUndoDislike = (userId: number) => {
-    // In a real app, this would call an API to undo the dislike
-    // For now, we'll just remove it from the list
-    setIsLoading(true);
-    setTimeout(() => {
-      setAllDislikedUsers(
-        allDislikedUsers.filter((user) => user.id !== userId),
-      );
-      setIsLoading(false);
-    }, 500);
-  };
-
-  const handleSort = (type: "recent" | "match") => {
-    setSortBy(type);
-    if (type === "match") {
-      setAllDislikedUsers(
-        [...allDislikedUsers].sort(
-          (a, b) => b.matchPercentage - a.matchPercentage,
-        ),
-      );
-    } else {
-      setAllDislikedUsers([...DISLIKED_USERS]); // Reset to original order (most recent first)
-    }
-    setIsFilterOpen(false);
-    setCurrentPage(1); // Reset to first page when sorting changes
-  };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Scroll to top when page changes
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (isLoading) {
+  const { dislikedUsers, fetchingDislikedUsers } = useUserDislikedUsers(userId);
+
+  if (fetchingDislikedUsers) {
     return <Spinner />;
   }
 
   return (
     <Page className="bg-black-100 min-h-screen">
       <SectionContainer>
-        <SectionBanner title="People You Disliked">
-          <div className="relative">
-            <AnimatedButton
-              onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="size-12 rounded-xl cursor-pointer border-2 border-pink-100 bg-black-200 text-white hover:bg-pink-100 hover:text-black-100 transition-all flex items-center justify-center"
-              hoverBackgroundColor="#E80352"
-              hoverTextColor="#FFFFFF"
-            >
-              <HiOutlineFilter className="size-6" />
-            </AnimatedButton>
+        <SectionBanner title="People You Disliked" />
 
-            <AnimatePresence>
-              {isFilterOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="absolute right-0 mt-2 w-48 bg-black-200 border-2 border-pink-100 rounded-xl shadow-lg overflow-hidden z-10"
-                >
-                  <div className="py-2">
-                    <button
-                      onClick={() => handleSort("recent")}
-                      className={`w-full px-4 py-3 text-left hover:bg-black-100 transition-colors flex items-center gap-2 ${
-                        sortBy === "recent" ? "text-pink-200" : "text-white"
-                      }`}
-                    >
-                      <span>Most Recent</span>
-                      {sortBy === "recent" && (
-                        <span className="ml-auto">✓</span>
-                      )}
-                    </button>
-                    <button
-                      onClick={() => handleSort("match")}
-                      className={`w-full px-4 py-3 text-left hover:bg-black-100 transition-colors flex items-center gap-2 ${
-                        sortBy === "match" ? "text-pink-200" : "text-white"
-                      }`}
-                    >
-                      <span>Highest Match</span>
-                      {sortBy === "match" && <span className="ml-auto">✓</span>}
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-        </SectionBanner>
-
-        {allDislikedUsers.length > 0 ? (
+        {dislikedUsers && dislikedUsers.length > 0 ? (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
               {dislikedUsers.map((user) => (
-                <DislikedUserCard
-                  key={user.id}
-                  user={user}
-                  onRemoveDislike={handleRemoveDislike}
-                  onUndoDislike={handleUndoDislike}
-                />
+                <DislikedUserCard key={user.id} user={user} />
               ))}
             </div>
 

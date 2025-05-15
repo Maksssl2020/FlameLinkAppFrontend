@@ -4,12 +4,13 @@ import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ReactNode, useEffect, useState } from "react";
 import {
-  HiOutlineHome,
-  HiOutlineUsers,
-  HiOutlineNewspaper,
-  HiOutlineHeart,
+  HiOutlineChatBubbleLeftRight,
   HiOutlineCog,
   HiOutlineHandThumbDown,
+  HiOutlineHeart,
+  HiOutlineHome,
+  HiOutlineNewspaper,
+  HiOutlineUsers,
 } from "react-icons/hi2";
 
 type SidebarProps = {
@@ -21,6 +22,7 @@ type SidebarProps = {
 const getIconForSection = (url: string) => {
   const iconMap: Record<string, ReactNode> = {
     "discover-people": <HiOutlineUsers className="size-5" />,
+    messages: <HiOutlineChatBubbleLeftRight className="size-5" />,
     news: <HiOutlineNewspaper className="size-5" />,
     matches: <HiOutlineUsers className="size-5" />,
     "liked-people": <HiOutlineHeart className="size-5" />,

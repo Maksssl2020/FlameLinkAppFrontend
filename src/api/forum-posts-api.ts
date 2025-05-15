@@ -6,13 +6,33 @@ export async function fetchForumPosts() {
   return response.data;
 }
 
-export async function fetchForumPostById(postId: number) {
+export async function fetchForumPostById(postId: number | string) {
   const response = await axiosConfig.get<ForumPost>(`forum-posts/${postId}`);
+  return response.data;
+}
+
+export async function checkIsPostLikedByUser(
+  postId: number | string,
+  userId: number | string,
+) {
+  const response = await axiosConfig.get<boolean>(
+    `forum-posts/post-likes/is-liked/${postId}/${userId}`,
+  );
   return response.data;
 }
 
 export async function handleCreateForumPost(data: ForumPostRequest) {
   const response = await axiosConfig.post<void>("forum-posts", data);
+  return response.data;
+}
+
+export async function handleLikeOrUnLikePost(
+  postId: number | string,
+  userId: number | string,
+) {
+  const response = await axiosConfig.post<void>(
+    `forum-posts/post-likes/${postId}/${userId}`,
+  );
   return response.data;
 }
 

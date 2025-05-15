@@ -1,13 +1,13 @@
-import Page from "../../animations/Page.tsx";
 import { UserProfile } from "../../types/userProfileTypes.ts";
 import { HiOutlinePlus, HiOutlineTrash, HiOutlineUser } from "react-icons/hi";
 import { IoCloudUploadOutline } from "react-icons/io5";
 import AnimatedButton from "../button/AnimatedButton.tsx";
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Modal from "../modal/Modal.tsx";
 import UploadMainPhotoPanel from "../panel/UploadMainPhotoPanel.tsx";
-import { motion } from "framer-motion";
+import toast from "react-hot-toast";
+import UploadGalleryPanel from "../panel/UploadGalleryPanel.tsx";
 
 type AccountProfilePhotosSectionProps = {
   userProfile: UserProfile;
@@ -76,7 +76,13 @@ const AccountProfilePhotosSection = ({
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-2xl font-bold text-white">Photo Gallery</h3>
             <AnimatedButton
-              onClick={() => setIsUploadGalleryModalOpen(true)}
+              onClick={() => {
+                if (galleryPhotos.length >= 6) {
+                  toast.error("You can upload up to 6 photos only.");
+                  return;
+                }
+                setIsUploadGalleryModalOpen(true);
+              }}
               className="px-4 py-2 rounded-lg text-white border-2 border-pink-100 cursor-pointer bg-black-200 flex items-center gap-2"
               hoverBackgroundColor="#E80352"
               hoverTextColor="#FFFFFF"
@@ -118,15 +124,20 @@ const AccountProfilePhotosSection = ({
                     )}
                   </motion.div>
                 ))
-              : // Empty state placeholders
-                Array(6)
+              : Array(6)
                   .fill(0)
                   .map((_, index) => (
                     <motion.div
                       key={index}
                       className="aspect-square border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center bg-black-100"
                       whileHover={{ borderColor: "#FE5487" }}
-                      onClick={() => setIsUploadGalleryModalOpen(true)}
+                      onClick={() => {
+                        if (galleryPhotos.length >= 6) {
+                          toast.error("You can upload up to 6 photos only.");
+                          return;
+                        }
+                        setIsUploadGalleryModalOpen(true);
+                      }}
                     >
                       <div className="flex flex-col items-center text-gray-300">
                         <HiOutlinePlus className="size-10" />
@@ -155,6 +166,15 @@ const AccountProfilePhotosSection = ({
           <Modal>
             <UploadMainPhotoPanel
               onClose={() => setIsUploadMainPhotoModalOpen(false)}
+            />
+          </Modal>
+        )}
+
+        {isUploadGalleryModalOpen && (
+          <Modal>
+            <UploadGalleryPanel
+              currentPhotoCount={galleryPhotos.length}
+              onClose={() => setIsUploadGalleryModalOpen(false)}
             />
           </Modal>
         )}

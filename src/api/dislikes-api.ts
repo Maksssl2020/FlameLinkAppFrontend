@@ -1,4 +1,12 @@
 import axiosConfig from "../config/axiosConfig.ts";
+import { User } from "../types/userTypes.ts";
+
+export async function fetchDislikedUsers(userId: number | string) {
+  const response = await axiosConfig.get<User[]>(
+    `dislikes/${userId}/disliked-users`,
+  );
+  return response.data;
+}
 
 export async function checkIsDisliked(
   sourceUserId: number | string,
