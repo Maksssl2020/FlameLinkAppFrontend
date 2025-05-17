@@ -32,7 +32,7 @@ const ChangePasswordPanel = ({ onClose }: ChangePasswordPanelProps) => {
   return (
     <div
       className={
-        "w-[600px] gap-8 h-auto flex flex-col bg-black-200 rounded-xl p-4 border-2 border-pink-100 bg-black-200"
+        "w-[600px] gap-8 h-auto flex flex-col bg-black-200 rounded-xl p-4 border-2 border-pink-100"
       }
     >
       <div

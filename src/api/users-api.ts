@@ -28,6 +28,14 @@ export async function fetchMatchingUsers(params: UserParams) {
     query.append("pageNumber", params.pageNumber.toString());
   if (params.pageSize) query.append("pageSize", params.pageSize.toString());
 
+  if (params.interests && params.interests.length > 0) {
+    params.interests.forEach((interest) => {
+      query.append("interests", interest);
+    });
+  }
+
+  query.append("userParamsImagesOptions", params.userParamsImagesOptions);
+
   const response = await axiosConfig.get(
     `/users/matching-users?${query.toString()}`,
   );

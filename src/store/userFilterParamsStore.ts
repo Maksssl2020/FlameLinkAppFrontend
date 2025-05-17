@@ -12,6 +12,8 @@ const initialUserParams: UserParams = {
   maxAge: 99,
   pageNumber: 0,
   pageSize: 20,
+  userParamsImagesOptions: "All",
+  interests: [],
 };
 
 export const useUserFilterParamsStore = create<UserFilterParamsStore>(

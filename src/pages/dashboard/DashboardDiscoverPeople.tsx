@@ -1,7 +1,7 @@
 import Page from "../../animations/Page.tsx";
 import { useEffect, useState } from "react";
 import { VscSettings } from "react-icons/vsc";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Modal from "../../components/modal/Modal.tsx";
 import AnimatedButton from "../../components/button/AnimatedButton.tsx";
 import FilterPeoplePanel from "../../components/panel/FilterPeoplePanel.tsx";
@@ -9,38 +9,30 @@ import SectionBanner from "../../components/banner/SectionBanner.tsx";
 import useMatchingUsersQuery from "../../hooks/queries/useMatchingUsersQuery.ts";
 import { User, UserParams } from "../../types/userTypes.ts";
 import Spinner from "../../components/spinner/Spinner.tsx";
-import useAuthentication from "../../hooks/useAuthentication.ts";
 import SectionContainer from "../../components/section/SectionContainer.tsx";
 import DiscoverUserCard from "../../components/card/DiscoverUserCard.tsx";
-import { motion } from "framer-motion";
 import { HiOutlineUsers } from "react-icons/hi2";
 import Pagination from "../../components/pagination/Pagination.tsx";
+import { useUserFilterParamsStore } from "../../store/userFilterParamsStore.ts";
 
 const DashboardDiscoverPeople = () => {
-  const { username } = useAuthentication();
+  const userParams = useUserFilterParamsStore((state) => state.userParams);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const [userParams, setUserParams] = useState<UserParams>({
-    userUsername: username ?? "",
-    minAge: 20,
-    maxAge: 70,
-    pageNumber: currentPage,
-    pageSize: 20,
-  });
+  const [userParamsToFilter, setUserParamsToFilter] =
+    useState<UserParams>(userParams);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { matchingUsers, fetchingMatchingUsers } =
-    useMatchingUsersQuery(userParams);
+    useMatchingUsersQuery(userParamsToFilter);
 
   useEffect(() => {
-    setUserParams({ ...userParams, pageNumber: currentPage });
-  }, [currentPage]);
+    setUserParamsToFilter({ ...userParams, pageNumber: currentPage });
+  }, [currentPage, userParams]);
 
   if (fetchingMatchingUsers) {
     return <Spinner />;
   }
-
-  console.log(userParams);
 
   return (
     <Page>
@@ -48,7 +40,7 @@ const DashboardDiscoverPeople = () => {
         <SectionBanner title="Find a matching soul">
           <AnimatedButton
             onClick={() => setIsModalOpen(true)}
-            className="size-12 rounded-xl cursor-pointer border-2 border-pink-100 bg-black-200 text-white hover:bg-pink-100 hover:text-black-100 transition-all"
+            className="size-12 rounded-xl cursor-pointer border-2 border-pink-100  text-white "
             hoverBackgroundColor="#E80352"
             hoverTextColor="#FFFFFF"
           >
@@ -102,8 +94,8 @@ const DashboardDiscoverPeople = () => {
           <Modal>
             <FilterPeoplePanel
               onClose={() => setIsModalOpen(false)}
-              initialFilters={userParams}
-              onSubmit={(userParams) => setUserParams(userParams)}
+              initialFilters={userParamsToFilter}
+              onSubmit={(userParams) => setUserParamsToFilter(userParams)}
             />
           </Modal>
         )}

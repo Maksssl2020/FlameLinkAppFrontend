@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAuthentication from "../useAuthentication.ts";
 import { fetchUsersMessages } from "../../api/messages-api.ts";
 
-function useUsersMessagesQuery(recipientId: string | number) {
+function useUsersMessagesQuery(recipientId: string | number | null) {
   const { userId } = useAuthentication();
 
   const { data: usersMessages, isLoading: fetchingUsersMessages } = useQuery({
@@ -12,8 +12,7 @@ function useUsersMessagesQuery(recipientId: string | number) {
         return await fetchUsersMessages(userId, recipientId);
       }
     },
-    enabled:
-      userId !== undefined && userId !== null && recipientId !== undefined,
+    enabled: recipientId !== undefined && recipientId !== null,
   });
 
   return { usersMessages, fetchingUsersMessages };

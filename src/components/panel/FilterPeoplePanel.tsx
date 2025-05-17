@@ -7,15 +7,17 @@ import { useState } from "react";
 import Spinner from "../spinner/Spinner.tsx";
 import useInterestSelection from "../../hooks/useInterestSelection.ts";
 import InterestCard from "../card/InterestCard.tsx";
-import { UserParams } from "../../types/userTypes.ts";
+import { UserParams, UserParamsImagesOptions } from "../../types/userTypes.ts";
 import useAuthentication from "../../hooks/useAuthentication.ts";
 import { useUserFilterParamsStore } from "../../store/userFilterParamsStore.ts";
 
 type FilterPeoplePanelProps = {
   onClose?: () => void;
-  initialFilters?: UserParams;
+  initialFilters: UserParams;
   onSubmit?: (params: UserParams) => void;
 };
+
+const allImagesOptions: UserParamsImagesOptions[] = ["All", "With", "Without"];
 
 const FilterPeoplePanel = ({
   onClose,
@@ -24,6 +26,8 @@ const FilterPeoplePanel = ({
 }: FilterPeoplePanelProps) => {
   const { username } = useAuthentication();
   const { setUserParams } = useUserFilterParamsStore.getState();
+  const [selectedUserParamsImagesOption, setSelectedUserParamsImagesOption] =
+    useState<UserParamsImagesOptions>(initialFilters.userParamsImagesOptions);
 
   const [minAgeValue, setMinAgeValue] = useState<number>(
     initialFilters?.minAge ?? 20,
@@ -36,7 +40,7 @@ const FilterPeoplePanel = ({
     selectedInterests,
     availableInterests,
     selectInterest,
-  } = useInterestSelection();
+  } = useInterestSelection(initialFilters.interests);
 
   const handleMinAgeChange = (data: number) => {
     if (data >= maxAgeValue) {
@@ -59,8 +63,11 @@ const FilterPeoplePanel = ({
       minAge: minAgeValue,
       maxAge: maxAgeValue,
       pageSize: 20,
+      interests: selectedInterests.length > 0 ? selectedInterests : undefined,
+      userParamsImagesOptions: selectedUserParamsImagesOption,
       pageNumber: 0,
     };
+
     setUserParams(params);
     onSubmit?.(params);
     onClose?.();
@@ -71,7 +78,7 @@ const FilterPeoplePanel = ({
   }
 
   return (
-    <div className="w-[600px] max-w-full h-[550px] flex flex-col gap-8 p-6 rounded-xl relative border-2 border-pink-100 bg-black-200 shadow-lg shadow-pink-100/10">
+    <div className="w-[600px] max-w-full h-auto flex flex-col gap-8 p-6 rounded-xl relative border-2 border-pink-100 bg-black-200 shadow-lg shadow-pink-100/10">
       <AnimatedButton
         onClick={() => onClose?.()}
         className="size-10 absolute right-3 top-3 rounded-full border-2 border-pink-100 cursor-pointer text-white "
@@ -108,33 +115,19 @@ const FilterPeoplePanel = ({
         >
           <label className={"text-xl "}>Profile option</label>
           <div className={"flex gap-2"}>
-            <AnimatedOptionButton
-              selectedTextColor={"#141414"}
-              backgroundColor={"#141414"}
-              borderColor={"#292929"}
-              isSelected={true}
-              className={"rounded-xl border-2 px-4 h-[50px] font-bold"}
-            >
-              All
-            </AnimatedOptionButton>
-            <AnimatedOptionButton
-              selectedTextColor={"#141414"}
-              backgroundColor={"#141414"}
-              borderColor={"#292929"}
-              isSelected={false}
-              className={"rounded-xl border-2 px-4 h-[50px] font-bold"}
-            >
-              With Images
-            </AnimatedOptionButton>
-            <AnimatedOptionButton
-              selectedTextColor={"#141414"}
-              backgroundColor={"#141414"}
-              borderColor={"#292929"}
-              isSelected={false}
-              className={"rounded-xl border-2 px-4 h-[50px] font-bold"}
-            >
-              Without Images
-            </AnimatedOptionButton>
+            {allImagesOptions.map((data, index) => (
+              <AnimatedOptionButton
+                key={index}
+                isSelected={selectedUserParamsImagesOption === data}
+                selectedTextColor={"#141414"}
+                backgroundColor={"#141414"}
+                borderColor={"#292929"}
+                onClick={() => setSelectedUserParamsImagesOption(data)}
+                className={"rounded-xl border-2 px-4 h-[50px] font-bold"}
+              >
+                {data}
+              </AnimatedOptionButton>
+            ))}
           </div>
         </div>
         <div
@@ -178,7 +171,7 @@ const FilterPeoplePanel = ({
       </div>
       <AnimatedButton
         onClick={handleSubmitFilters}
-        className="w-full h-[55px] bg-gradient-to-r from-pink-400 via-pink-300 to-pink-200 text-black-100 font-bold rounded-xl text-xl"
+        className="w-full h-[55px] mt-auto bg-gradient-to-r from-pink-400 via-pink-300 to-pink-200 text-black-100 font-bold rounded-xl text-xl"
         hoverBackgroundColor="#E80352"
         hoverTextColor="#FFFFFF"
       >

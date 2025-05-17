@@ -20,6 +20,7 @@ const initialState: RegisterDataState = {
   country: "",
   city: "",
   interests: [],
+  lookingFor: "Friends",
 };
 
 const sessionStorageAdapter: PersistStorage<SignUpState> = {

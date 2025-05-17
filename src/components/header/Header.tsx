@@ -9,13 +9,9 @@ import { useEffect, useRef, useState } from "react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { HiOutlineCog, HiOutlineFire } from "react-icons/hi2";
+import Modal from "../modal/Modal.tsx";
 
-type HeaderProps = {
-  toggleMobileSidebar?: () => void;
-  isMobileSidebarOpen?: boolean;
-};
-
-const Header = ({ toggleMobileSidebar, isMobileSidebarOpen }: HeaderProps) => {
+const Header = () => {
   const authentication = useAuthentication();
   const logout = useAuthStore().logout;
   const navigate = useNavigate();
@@ -140,18 +136,12 @@ const Header = ({ toggleMobileSidebar, isMobileSidebarOpen }: HeaderProps) => {
         )}
       </div>
 
-      {/* Logout confirmation dialog */}
       <AnimatePresence>
         {isLogoutConfirmOpen && (
-          <motion.div
-            className="fixed inset-0 bg-black-100/60 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
+          <Modal>
             <motion.div
               ref={logoutConfirmRef}
-              className="bg-gray-100 border-2 border-pink-100 rounded-xl p-6 max-w-md w-full"
+              className="bg-gray-100 border-2 border-pink-100 rounded-xl p-6 max-w-md w-full flex flex-col items-center"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
@@ -178,7 +168,7 @@ const Header = ({ toggleMobileSidebar, isMobileSidebarOpen }: HeaderProps) => {
                 </AnimatedButton>
               </div>
             </motion.div>
-          </motion.div>
+          </Modal>
         )}
       </AnimatePresence>
     </header>

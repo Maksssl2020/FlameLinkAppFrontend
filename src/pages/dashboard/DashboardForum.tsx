@@ -136,7 +136,7 @@ const DashboardForum = () => {
             <div className="relative">
               <AnimatedButton
                 onClick={() => setIsFilterOpen(!isFilterOpen)}
-                className="size-12 rounded-xl cursor-pointer border-2 border-pink-100 bg-black-200 text-white hover:bg-pink-100 hover:text-black-100 transition-all flex items-center justify-center"
+                className="size-12 rounded-xl cursor-pointer border-2 border-pink-100  flex items-center justify-center"
                 hoverBackgroundColor="#E80352"
                 hoverTextColor="#FFFFFF"
               >
@@ -192,7 +192,7 @@ const DashboardForum = () => {
           </div>
         </SectionBanner>
 
-        <div className="mt-6 flex flex-col md:flex-row gap-6">
+        <div className="w-full mt-6 flex flex-col md:flex-row gap-6">
           <div className="w-full md:w-64 flex-shrink-0">
             <div className="bg-black-200 rounded-xl border-2 border-gray-200 overflow-hidden">
               <div className="p-4 border-b border-gray-200">

@@ -42,9 +42,13 @@ export interface UserParams {
   maxAge?: number;
   pageNumber?: number;
   pageSize?: number;
+  userParamsImagesOptions: UserParamsImagesOptions;
+  interests?: string[];
 }
 
 export interface UserRelationshipsRequest {
   sourceUserId: number | string;
   targetUserId: number | string;
 }
+
+export type UserParamsImagesOptions = "All" | "With" | "Without";

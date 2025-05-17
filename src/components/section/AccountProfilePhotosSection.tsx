@@ -8,6 +8,8 @@ import Modal from "../modal/Modal.tsx";
 import UploadMainPhotoPanel from "../panel/UploadMainPhotoPanel.tsx";
 import toast from "react-hot-toast";
 import UploadGalleryPanel from "../panel/UploadGalleryPanel.tsx";
+import useDeletePhotoMutation from "../../hooks/muatations/useDeletePhotoMutation.ts";
+import Spinner from "../spinner/Spinner.tsx";
 
 type AccountProfilePhotosSectionProps = {
   userProfile: UserProfile;
@@ -22,11 +24,15 @@ const AccountProfilePhotosSection = ({
     useState<boolean>(false);
   const [selectedPhoto, setSelectedPhoto] = useState<number | null>(null);
 
-  const galleryPhotos = userProfile.photos || [];
-
   const handlePhotoClick = (index: number) => {
     setSelectedPhoto(selectedPhoto === index ? null : index);
   };
+
+  const { deletePhoto, deletingPhoto } = useDeletePhotoMutation();
+
+  if (deletingPhoto) {
+    return <Spinner />;
+  }
 
   return (
     <div className="w-full h-full">
@@ -77,7 +83,7 @@ const AccountProfilePhotosSection = ({
             <h3 className="text-2xl font-bold text-white">Photo Gallery</h3>
             <AnimatedButton
               onClick={() => {
-                if (galleryPhotos.length >= 6) {
+                if (userProfile.photos.length >= 6) {
                   toast.error("You can upload up to 6 photos only.");
                   return;
                 }
@@ -93,8 +99,8 @@ const AccountProfilePhotosSection = ({
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {galleryPhotos.length > 0
-              ? galleryPhotos.map((photo, index) => (
+            {userProfile.photos.length > 0
+              ? userProfile.photos.map((photo, index) => (
                   <motion.div
                     key={index}
                     className={`aspect-square relative border-2 rounded-xl overflow-hidden cursor-pointer ${
@@ -114,6 +120,7 @@ const AccountProfilePhotosSection = ({
                     {selectedPhoto === index && (
                       <div className="absolute inset-0 bg-black-100/70 flex items-center justify-center">
                         <AnimatedButton
+                          onClick={() => deletePhoto(photo.id)}
                           className="size-12 rounded-full text-white border-2 border-pink-100 bg-black-200"
                           hoverBackgroundColor="#E80352"
                           hoverTextColor="#FFFFFF"
@@ -132,7 +139,7 @@ const AccountProfilePhotosSection = ({
                       className="aspect-square border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center bg-black-100"
                       whileHover={{ borderColor: "#FE5487" }}
                       onClick={() => {
-                        if (galleryPhotos.length >= 6) {
+                        if (userProfile.photos.length >= 6) {
                           toast.error("You can upload up to 6 photos only.");
                           return;
                         }
@@ -173,7 +180,7 @@ const AccountProfilePhotosSection = ({
         {isUploadGalleryModalOpen && (
           <Modal>
             <UploadGalleryPanel
-              currentPhotoCount={galleryPhotos.length}
+              currentPhotoCount={userProfile.photos.length}
               onClose={() => setIsUploadGalleryModalOpen(false)}
             />
           </Modal>

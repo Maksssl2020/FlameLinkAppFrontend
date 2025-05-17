@@ -10,6 +10,8 @@ import { signUpSecondStepValidator } from "../validators/signUpValidator.ts";
 import { SignUpSecondStepData } from "../types/types.ts";
 import FormInput from "../components/input/FormInput.tsx";
 import GoBackButton from "../components/button/GoBackButton.tsx";
+import LookingForButtonsSelect from "../components/select/LookingForButtonsSelect.tsx";
+import { LookingForType } from "../types/userProfileTypes.ts";
 
 const genderOptions: SignUpSecondStepData["gender"][] = [
   "Male",
@@ -41,6 +43,7 @@ const SignUpSecondStep = () => {
       dateOfBirth: signUpData.dateOfBirth ?? null,
       gender: signUpData.gender,
       preference: signUpData.preference,
+      lookingFor: signUpData.lookingFor,
     },
   });
 
@@ -54,6 +57,10 @@ const SignUpSecondStep = () => {
 
   const onPreferenceChange = (preference: "Males" | "Females" | "Both") => {
     setValue("preference", preference);
+  };
+
+  const onLookingForTypeChange = (lookingFor: LookingForType) => {
+    setValue("lookingFor", lookingFor);
   };
 
   const onNextStep = (data: SignUpSecondStepData) => {
@@ -77,13 +84,24 @@ const SignUpSecondStep = () => {
             type="text"
             register={register("country")}
             error={errors?.country?.message}
+            formType={"default"}
           />
           <FormInput
             title="City"
             type="text"
             register={register("city")}
             error={errors?.city?.message}
+            formType={"default"}
           />
+          <div className={"flex flex-col gap-3"}>
+            <label className="ml-2 text-white text-lg font-medium">
+              Looking For
+            </label>
+            <LookingForButtonsSelect
+              chosenType={watch("lookingFor")}
+              onSelect={onLookingForTypeChange}
+            />
+          </div>
           <DatePickerInput
             initSelectedDate={signUpData.dateOfBirth}
             title="Date of birth"

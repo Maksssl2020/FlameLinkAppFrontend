@@ -64,3 +64,10 @@ export async function handleUpdateUserProfile(
   );
   return response.data;
 }
+
+export async function handleDeletePhotoFromProfile(photoId: number | string) {
+  const response = await axiosConfig.delete<void>(
+    `/users-profiles/delete-profile-image/${photoId}`,
+  );
+  return response.data;
+}

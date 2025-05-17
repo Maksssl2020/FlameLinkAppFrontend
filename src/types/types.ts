@@ -1,3 +1,5 @@
+import { LookingForType } from "./userProfileTypes.ts";
+
 export interface SignUpFirstStepData {
   firstName: string;
   lastName: string;
@@ -11,6 +13,7 @@ export interface SignUpSecondStepData {
   dateOfBirth: Date | null;
   gender: "Male" | "Female" | "Other";
   preference: "Males" | "Females" | "Both";
+  lookingFor: LookingForType;
 }
 
 export interface ErrorResponse {

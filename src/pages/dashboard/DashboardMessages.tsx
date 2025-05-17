@@ -1,15 +1,11 @@
 import {
   HiOutlineArrowSmallLeft,
   HiOutlineEllipsisHorizontal,
-  HiOutlineFaceSmile,
   HiOutlinePaperAirplane,
-  HiOutlinePaperClip,
-  HiOutlinePhoto,
   HiOutlineXMark,
 } from "react-icons/hi2";
 import Page from "../../animations/Page.tsx";
 import SectionContainer from "../../components/section/SectionContainer.tsx";
-import AnimatedButton from "../../components/button/AnimatedButton.tsx";
 import SectionBanner from "../../components/banner/SectionBanner.tsx";
 import { HiOutlineSearch } from "react-icons/hi";
 import { useEffect, useRef, useState } from "react";
@@ -36,9 +32,8 @@ const DashboardMessages = () => {
     null,
   );
 
-  const { usersMessages, fetchingUsersMessages } = useUsersMessagesQuery(
-    selectedRecipientId || "",
-  );
+  const { usersMessages, fetchingUsersMessages } =
+    useUsersMessagesQuery(selectedRecipientId);
   const { userConversations, fetchingUserConversations } =
     useUserConversationsQuery();
   const { sendMessage, sendingMessage } = useSendMessageMutation();
@@ -60,6 +55,7 @@ const DashboardMessages = () => {
   const handleSelectConversation = (conversation: ConversationPreview) => {
     setSelectedRecipientId(conversation.userId);
     setSelectedConversation(conversation);
+
     if (isMobile) setShowMobileConversation(true);
   };
 
@@ -74,7 +70,7 @@ const DashboardMessages = () => {
     c.username.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  if (fetchingUserConversations) return <Spinner />;
+  if (fetchingUserConversations || fetchingUsersMessages) return <Spinner />;
 
   return (
     <Page>

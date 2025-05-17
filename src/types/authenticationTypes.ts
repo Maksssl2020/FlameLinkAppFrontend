@@ -1,3 +1,5 @@
+import { LookingForType } from "./userProfileTypes.ts";
+
 export interface LoginRequest {
   username: string;
   password: string;
@@ -14,7 +16,7 @@ export interface RegisterDataState {
   country: string;
   preference: "Males" | "Females" | "Both";
   dateOfBirth: Date | null;
-  lookingFor: "";
+  lookingFor: LookingForType;
   interests: string[];
 }
 

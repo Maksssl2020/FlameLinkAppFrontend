@@ -116,34 +116,12 @@ const LandingPage = () => {
             >
               <AnimatedButton
                 onClick={() => navigate("/sign-up/step/1")}
-                className="bg-gradient-to-r from-pink-400 via-pink-300 to-pink-200 text-black-100 font-bold px-8 py-4 rounded-xl text-lg"
+                className="bg-gradient-to-r w-1/2 from-pink-400 via-pink-300 to-pink-200 text-black-100 font-bold px-8 py-4 rounded-xl text-lg"
               >
                 Get Started
               </AnimatedButton>
-              <AnimatedButton
-                onClick={() => navigate("/about")}
-                className="bg-transparent border-2 border-gray-300 text-white font-bold px-8 py-4 rounded-xl text-lg"
-                hoverBackgroundColor="transparent"
-                hoverBorderColor="#FE5487"
-                hoverTextColor="#FE5487"
-              >
-                Learn More
-              </AnimatedButton>
             </motion.div>
           </div>
-
-          {/*<motion.div*/}
-          {/*  className="flex-1 flex justify-center"*/}
-          {/*  initial={{ opacity: 0, scale: 0.8 }}*/}
-          {/*  animate={{ opacity: 1, scale: 1 }}*/}
-          {/*  transition={{ delay: 0.3 }}*/}
-          {/*>*/}
-          {/*  <img*/}
-          {/*    src="/placeholder.svg?height=500&width=500"*/}
-          {/*    alt="FlameLink Platform Preview"*/}
-          {/*    className="rounded-2xl border-4 border-pink-100 max-w-full h-auto"*/}
-          {/*  />*/}
-          {/*</motion.div>*/}
         </section>
 
         <section className="py-20">
@@ -190,12 +168,12 @@ const LandingPage = () => {
 
             <div className="space-y-24 relative">
               <motion.div
-                className="flex flex-col md:flex-row items-center gap-8"
+                className="flex flex-col md:flex-row items-center gap-8 mr-8"
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                <div className="md:w-1/2 flex justify-end">
+                <div className="md:w-1/2 flex justify-end ">
                   <div className="bg-gray-100 p-6 rounded-xl border-2 border-pink-100 max-w-md">
                     <div className="flex items-center gap-4 mb-4">
                       <div className="bg-pink-100 text-black-100 font-bold rounded-full w-10 h-10 flex items-center justify-center">
@@ -212,18 +190,10 @@ const LandingPage = () => {
                     </p>
                   </div>
                 </div>
-                <div className="md:w-1/2 hidden md:block">
-                  {/*<img*/}
-                  {/*  src="/placeholder.svg?height=200&width=300"*/}
-                  {/*  alt="Create profile"*/}
-                  {/*  className="rounded-xl"*/}
-                  {/*/>*/}
-                </div>
               </motion.div>
 
-              {/* Step 2 */}
               <motion.div
-                className="flex flex-col md:flex-row-reverse items-center gap-8"
+                className="flex flex-col md:flex-row-reverse items-center gap-8 ml-8"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 }}
@@ -245,18 +215,10 @@ const LandingPage = () => {
                     </p>
                   </div>
                 </div>
-                <div className="md:w-1/2 hidden md:block">
-                  {/*<img*/}
-                  {/*  src="/placeholder.svg?height=200&width=300"*/}
-                  {/*  alt="Discover connections"*/}
-                  {/*  className="rounded-xl"*/}
-                  {/*/>*/}
-                </div>
               </motion.div>
 
-              {/* Step 3 */}
               <motion.div
-                className="flex flex-col md:flex-row items-center gap-8"
+                className="flex flex-col md:flex-row items-center gap-8 mr-8"
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 }}
@@ -275,13 +237,6 @@ const LandingPage = () => {
                       your network.
                     </p>
                   </div>
-                </div>
-                <div className="md:w-1/2 hidden md:block">
-                  {/*<img*/}
-                  {/*  src="/placeholder.svg?height=200&width=300"*/}
-                  {/*  alt="Engage and connect"*/}
-                  {/*  className="rounded-xl"*/}
-                  {/*/>*/}
                 </div>
               </motion.div>
             </div>
@@ -310,11 +265,6 @@ const LandingPage = () => {
                   "{testimonial.content}"
                 </p>
                 <div className="flex items-center gap-4">
-                  {/*<img*/}
-                  {/*  src={testimonial.avatar || "/placeholder.svg"}*/}
-                  {/*  alt={testimonial.name}*/}
-                  {/*  className="w-12 h-12 rounded-full border-2 border-pink-100"*/}
-                  {/*/>*/}
                   <div>
                     <h4 className="font-bold">{testimonial.name}</h4>
                     <p className="text-gray-300">{testimonial.role}</p>

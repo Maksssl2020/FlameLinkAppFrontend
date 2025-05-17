@@ -30,7 +30,6 @@ const getIconForSection = (url: string) => {
     overall: <HiOutlineCog className="size-5" />,
     profile: <HiOutlineUsers className="size-5" />,
     "admin/manage-interests": <HiOutlineCog className="size-5" />,
-    "admin/news-form": <HiOutlineNewspaper className="size-5" />,
   };
 
   return iconMap[url] || <HiOutlineHome className="size-5" />;
@@ -40,17 +39,6 @@ const Sidebar = ({ sections, linkPrefix, children }: SidebarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeSection, setActiveSection] = useState("");
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkScreenSize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkScreenSize();
-    window.addEventListener("resize", checkScreenSize);
-    return () => window.removeEventListener("resize", checkScreenSize);
-  }, []);
 
   useEffect(() => {
     const currentPath = location.pathname.split("/").pop();

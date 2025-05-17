@@ -14,7 +14,6 @@ const sections: SectionType[] = [
 
 const adminSections: SectionType[] = [
   { name: "Manage Interests", url: "admin/manage-interests" },
-  { name: "Create News", url: "admin/news-form" },
 ];
 
 const AccountLayout = () => {
